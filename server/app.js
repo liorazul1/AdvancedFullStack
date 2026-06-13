@@ -1,18 +1,34 @@
-const express = require('express'); 
+require('dotenv').config();
+
+const express = require('express');
+const cors = require('cors');
+
+const userRoutes = require('./routes/userRoutes');
+const itemRoutes = require('./routes/itemRoutes');
+
+const globalErrorHandler = require('./middleware/errorHandler');
+const logger = require('./middleware/logger');
+
 const app = express();
 
-const cors = require('cors');
-// ... other imports
+// הגדרות CORS מתוך משתני הסביבה
 const corsOptions = {
-origin: process.env.CLIENT_URL, // Dynamically allow your client URL
-credentials: true, // Allow cookies to be sent with requests
-methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed HTTP methods
-optionsSuccessStatus: 204 // Some legacy browsers (IE11, various SmartTVs) choke on 204
+  origin: process.env.CLIENT_URL, // כתובת ה-Frontend שמותר לה לגשת לשרת
+  credentials: true, // מאפשר שליחת Cookies / הרשאות בין הלקוח לשרת
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // סוגי הבקשות המותרות
+  optionsSuccessStatus: 204 // תשובה תקינה לבקשות preflight
 };
 
-app.use(cors(corsOptions));
-app.use(express.json());            //  מוודא שהשרת יודע לקרוא JSON מהלקוח
+// Middleware גלובלי
+app.use(cors(corsOptions)); // מפעיל את הגדרות ה-CORS
+app.use(express.json()); // מאפשר לשרת לקרוא JSON מהלקוח
+app.use(logger); // מדפיס בקשות לקונסול
 
-module.exports = app; // מייצא את האפליקציה לסרבר
+// Routes
+app.use('/api/users', userRoutes);
+app.use('/api/items', itemRoutes);
 
+// Error handler — חייב להיות אחרון
+app.use(globalErrorHandler);
 
+module.exports = app;
