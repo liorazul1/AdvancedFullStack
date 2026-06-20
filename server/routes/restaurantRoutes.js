@@ -32,6 +32,13 @@ router.put('/:id', updateRestaurant);
 // מחיקת מסעדה לפי מזהה - Delete
 router.delete('/:id', deleteRestaurant);
 
+// Future routes:
+// GET /api/restaurants/search
+// GET /api/restaurants/city/:city
+// GET /api/restaurants/cuisine/:cuisine
+// GET /api/restaurants/vibe/:vibe
+// GET /api/restaurants/recommended
+// GET /api/restaurants/top-rated
 
 // ייצוא ה-Router לשימוש בקבצים אחרים
 module.exports = router;
