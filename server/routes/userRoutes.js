@@ -9,10 +9,17 @@ const {
   deleteUser
 } = require('../controllers/userController');
 
+const validate = require('../middleware/validate');
+const { createUserSchema } = require('../validation/userValidation');
+
 // User Routes
 
 // יצירת משתמש חדש - Create
-router.post('/', createUser);
+router.post(
+  '/',
+  validate(createUserSchema),
+  createUser
+);
 
 // שליפת כל המשתמשים - Read
 router.get('/', getAllUsers);

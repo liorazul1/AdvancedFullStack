@@ -13,11 +13,17 @@ const {
   deleteReview
 } = require('../controllers/reviewController');
 
+const validate = require('../middleware/validate');
+const { createReviewSchema } = require('../validation/reviewValidation');
 
 // Review Routes
 
 // יצירת ביקורת חדשה - Create
-router.post('/', createReview);
+router.post(
+  '/',
+  validate(createReviewSchema),
+  createReview
+);
 
 // שליפת כל הביקורות - Read
 router.get('/', getAllReviews);

@@ -13,11 +13,17 @@ const {
   deleteRestaurant
 } = require('../controllers/restaurantController');
 
+const validate = require('../middleware/validate');
+const { createRestaurantSchema } = require('../validation/restaurantValidation');
 
 // Restaurant Routes
 
 // יצירת מסעדה חדשה - Create
-router.post('/', createRestaurant);
+router.post(
+  '/',
+  validate(createRestaurantSchema),
+  createRestaurant
+);
 
 // שליפת כל המסעדות - Read
 router.get('/', getAllRestaurants);
