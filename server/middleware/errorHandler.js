@@ -1,35 +1,23 @@
 // Middleware גלובלי לטיפול בשגיאות
-const errorHandler = (err, req, res, next) => {
-
-  // אם הוגדר קוד שגיאה - משתמשים בו
-  // אחרת מחזירים 500 (Internal Server Error)
+const globalErrorHandler = (err, req, res, next) => {
+  // אם לשגיאה יש statusCode מוגדר משתמשים בו, אחרת מחזירים 500
   const statusCode = err.statusCode || 500;
 
-  // אם קיימת הודעת שגיאה - משתמשים בה
-  // אחרת מחזירים הודעת ברירת מחדל
-  const message = err.message || 'Internal server error';
+  // אם קיימת הודעת שגיאה משתמשים בה, אחרת הודעת ברירת מחדל
+  const message = err.message || 'Internal Server Error';
 
-  // בסביבת פיתוח מדפיסים את פירוט השגיאה המלא לקונסול
-  if (process.env.NODE_ENV === 'development') {
-    console.error(err.stack);
-  }
+  // הדפסת השגיאה לקונסול לצורך Debug
+  console.error(`ERROR: ${message}`, err.stack);
 
-  // מחזירים תשובת JSON מסודרת ללקוח
+  // החזרת תשובת JSON אחידה ללקוח
   res.status(statusCode).json({
-
     success: false,
-
-    message,
+    message: message,
 
     // מציגים Stack Trace רק בסביבת פיתוח
-    stack:
-      process.env.NODE_ENV === 'development'
-        ? err.stack
-        : undefined
-
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
   });
-
 };
 
-// ייצוא הפונקציה לשימוש בקבצים אחרים
-module.exports = errorHandler;
+// ייצוא ה-Middleware לשימוש ב-app.js
+module.exports = globalErrorHandler;
