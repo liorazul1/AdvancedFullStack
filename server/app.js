@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 
 const userRoutes = require('./routes/userRoutes');
-const itemRoutes = require('./routes/itemRoutes');
+const restaurantRoutes = require('./routes/restaurantRoutes');
 
 const globalErrorHandler = require('./middleware/errorHandler');
 const logger = require('./middleware/logger');
@@ -26,7 +26,7 @@ app.use(logger); // מדפיס בקשות לקונסול
 
 // Routes
 app.use('/api/users', userRoutes);
-app.use('/api/items', itemRoutes);
+app.use('/api/restaurants', restaurantRoutes);
 
 // Error handler — חייב להיות אחרון
 app.use(globalErrorHandler);
