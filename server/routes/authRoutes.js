@@ -14,14 +14,16 @@ const {
 // מייבא את Middleware ההגנה שבודק JWT
 const { protect } = require('../middleware/authMiddleware');
 
+const validate = require('../middleware/validate');
+const { registerSchema, loginSchema } = require('../validation/authValidation');
+
 // הרשמת משתמש חדש
-router.post('/register', register);
+router.post('/register', validate(registerSchema), register);
 
 // התחברות משתמש קיים
-router.post('/login', login);
+router.post('/login', validate(loginSchema), login);
 
 // שליפת המשתמש המחובר - דורש Token תקין
 router.get('/me', protect, getMe);
 
-// ייצוא ה-Router לשימוש בקבצים אחרים
 module.exports = router;
