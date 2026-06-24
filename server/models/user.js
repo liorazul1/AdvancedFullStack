@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+
 const { Schema } = mongoose;
 
 const userSchema = new Schema(
@@ -23,7 +25,8 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
-      minlength: 6
+      minlength: 6,
+      select: false
     },
 
     favoriteCuisines: {
@@ -51,5 +54,20 @@ const userSchema = new Schema(
     timestamps: true
   }
 );
+
+// הצפנת סיסמה לפני שמירת משתמש, רק אם שדה הסיסמה נוצר או השתנה
+userSchema.pre('save', async function() {
+  // אם הסיסמה לא שונתה, אין צורך להצפין אותה שוב
+  if (!this.isModified('password')) return;
+
+  // הצפנת הסיסמה באמצעות bcrypt לפני השמירה
+  this.password = await bcrypt.hash(this.password, 12);
+
+});
+
+// פונקציה להשוואת סיסמה רגילה מול הסיסמה המוצפנת במסד
+userSchema.methods.comparePassword = async function(candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
 
 module.exports = mongoose.model('User', userSchema);

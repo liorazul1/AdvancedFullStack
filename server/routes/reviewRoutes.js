@@ -16,11 +16,15 @@ const {
 const validate = require('../middleware/validate');
 const { createReviewSchema } = require('../validation/reviewValidation');
 
+// מייבא את Middleware ההגנה שבודק JWT
+const { protect } = require('../middleware/authMiddleware');
+
 // Review Routes
 
 // יצירת ביקורת חדשה - Create
 router.post(
   '/',
+  protect,
   validate(createReviewSchema),
   createReview
 );
@@ -32,10 +36,10 @@ router.get('/', getAllReviews);
 router.get('/restaurant/:restaurantId', getReviewsByRestaurant);
 
 // עדכון ביקורת לפי מזהה - Update
-router.put('/:id', updateReview);
+router.put('/:id', protect, updateReview);
 
 // מחיקת ביקורת לפי מזהה - Delete
-router.delete('/:id', deleteReview);
+router.delete('/:id', protect, deleteReview);
 
 
 // ייצוא ה-Router לשימוש בקבצים אחרים

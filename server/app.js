@@ -9,6 +9,7 @@ const { apiLimiter, authLimiter } = require('./middleware/rateLimiter');
 const userRoutes = require('./routes/userRoutes');
 const restaurantRoutes = require('./routes/restaurantRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const globalErrorHandler = require('./middleware/errorHandler');
 const logger = require('./middleware/logger');
@@ -33,6 +34,7 @@ app.use(express.json()); // מאפשר לשרת לקרוא JSON מהלקוח
 app.use(logger); // מדפיס בקשות לקונסול
 
 // Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/reviews', reviewRoutes);

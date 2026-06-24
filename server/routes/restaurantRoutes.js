@@ -16,11 +16,15 @@ const {
 const validate = require('../middleware/validate');
 const { createRestaurantSchema } = require('../validation/restaurantValidation');
 
+// מייבא את Middleware ההגנה שבודק JWT
+const { protect } = require('../middleware/authMiddleware');
+
 // Restaurant Routes
 
 // יצירת מסעדה חדשה - Create
 router.post(
   '/',
+  protect,
   validate(createRestaurantSchema),
   createRestaurant
 );
@@ -33,10 +37,10 @@ router.get('/', getAllRestaurants);
 router.get('/:id', getRestaurantById);
 
 // עדכון מסעדה לפי מזהה - Update
-router.put('/:id', updateRestaurant);
+router.put('/:id', protect, updateRestaurant);
 
 // מחיקת מסעדה לפי מזהה - Delete
-router.delete('/:id', deleteRestaurant);
+router.delete('/:id', protect, deleteRestaurant);
 
 // Future routes:
 // GET /api/restaurants/search
