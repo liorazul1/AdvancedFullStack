@@ -20,10 +20,9 @@ function Home() {
     refetch,
   } = useFetch('/restaurants');
 
-  // יוצג בהמשך המצגת
-  if (loading) return;
+  
+  if (loading) return  <LoadingSpinner />;
 
-  // יוצג בהמשך המצגת
   if (error) return;
 
   return (
