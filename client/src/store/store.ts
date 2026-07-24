@@ -1,8 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
+// מייבא את ה-Reducer של המסעדות כדי לחבר אותו ל-Redux Store
+import restaurantsReducer from './restaurantsSlice';
 
 // יצירת Store מרכזי של Redux לניהול State גלובלי באפליקציה
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    // מחבר את ניהול המסעדות ל-Redux Store
+    restaurants: restaurantsReducer,
+  },
 });
 
 // טיפוס שמייצג את כל ה-State הגלובלי של Redux
