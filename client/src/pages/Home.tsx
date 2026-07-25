@@ -1,5 +1,7 @@
-// מייבא את ה-Hook המותאם אישית לשליפת נתונים מהשרת
-import { useFetch } from '../hooks/useFetch';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchRestaurants } from '../store/restaurantsSlice';
+import type { RootState, AppDispatch } from '../store/store';
 
 // ייבוא קומפוננטות
 import HeroSection from '../components/HeroSection';
@@ -17,12 +19,18 @@ import ErrorMessage from '../components/ErrorMessage';
 function Home() {
 
   // שליפת רשימת המסעדות מהשרת
+  const dispatch = useDispatch<AppDispatch>();
+
   const {
-    data: restaurants,
+    restaurants,
     loading,
     error,
-    refetch,
-  } = useFetch('/restaurants');
+  } = useSelector((state: RootState) => state.restaurants);
+
+
+  useEffect(() => {
+    dispatch(fetchRestaurants());
+  }, [dispatch]);
 
 
   if (loading) return <LoadingSpinner />;

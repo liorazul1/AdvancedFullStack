@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Filter, Search, Star } from "lucide-react";
 
-import { useFetch } from "../hooks/useFetch";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRestaurants } from "../store/restaurantsSlice";
+import type { RootState, AppDispatch } from "../store/store";
 import RestaurantCard from "../components/RestaurantCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ErrorMessage from "../components/ErrorMessage";
@@ -34,11 +37,18 @@ const vibeOptions = [
 
 function ExplorePage() {
 
+  const dispatch = useDispatch<AppDispatch>();
+
   const {
-    data: restaurants,
+    restaurants,
     loading,
     error,
-  } = useFetch("/restaurants");
+  } = useSelector((state: RootState) => state.restaurants);
+
+
+  useEffect(() => {
+    dispatch(fetchRestaurants());
+  }, [dispatch]);
 
 
   const [search, setSearch] = useState("");
@@ -368,10 +378,10 @@ function FilterButton({
       onClick={onClick}
 
       className={`w-full px-4 py-3 rounded-xl font-bold text-left transition-all hover:scale-[1.02] hover:shadow-md ${active
-          ? color
-            ? "text-white shadow-xl"
-            : "bg-[#2d2d2d] text-white shadow-xl"
-          : "bg-[#FAFAFA] text-[#2d2d2d]"
+        ? color
+          ? "text-white shadow-xl"
+          : "bg-[#2d2d2d] text-white shadow-xl"
+        : "bg-[#FAFAFA] text-[#2d2d2d]"
         }`}
 
       style={
