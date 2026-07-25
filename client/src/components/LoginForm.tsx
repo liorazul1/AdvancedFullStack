@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import api from '../services/api';
+import { Link } from "react-router-dom";
 
 // מגדיר אילו שגיאות יכולות להיות בטופס
 interface LoginErrors {
@@ -73,36 +74,80 @@ function LoginForm() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                }
-            />
-            {errors.email && <p>{errors.email}</p>}
+        <form
+            onSubmit={handleSubmit}
+            className="space-y-6"
+        >
+            <div>
+                <p className="text-sm font-black text-[#2d2d2d] uppercase tracking-wider mb-2">
+                    Email
+                </p>
 
-            <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={formData.password}
-                onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                }
-            />
-            {errors.password && <p>{errors.password}</p>}
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="your@email.com"
+                    value={formData.email}
+                    onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                    }
+                    className="w-full px-6 py-4 bg-[#FAFAFA] rounded-2xl border-2 border-[#2d2d2d]/5 focus:border-[#FF5733] focus:outline-none transition-all text-[#2d2d2d] placeholder-[#2d2d2d]/30 font-medium"
+                />
 
-            {serverError && <p>{serverError}</p>}
+                {errors.email && (
+                    <p className="mt-2 text-sm text-red-500">
+                        {errors.email}
+                    </p>
+                )}
+            </div>
 
-            <button type="submit">
+            <div>
+                <p className="text-sm font-black text-[#2d2d2d] uppercase tracking-wider mb-2">
+                    Password
+                </p>
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="••••••••"
+                    value={formData.password}
+                    onChange={(e) =>
+                        setFormData({ ...formData, password: e.target.value })
+                    }
+                    className="w-full px-6 py-4 bg-[#FAFAFA] rounded-2xl border-2 border-[#2d2d2d]/5 focus:border-[#FF5733] focus:outline-none transition-all text-[#2d2d2d] placeholder-[#2d2d2d]/30 font-medium"
+                />
+
+                {errors.password && (
+                    <p className="mt-2 text-sm text-red-500">
+                        {errors.password}
+                    </p>
+                )}
+            </div>
+
+            {serverError && (
+                <p className="text-center text-sm text-red-500">
+                    {serverError}
+                </p>
+            )}
+
+            <button
+                type="submit"
+                className="w-full px-8 py-5 bg-[#FF5733] text-white hover:bg-[#FF5733]/90 font-black text-lg rounded-2xl hover:scale-[1.02] transition-all shadow-xl"
+            >
                 Log In
             </button>
 
-
+            <div className="text-center">
+                <p className="text-[#2d2d2d]/50 font-medium">
+                    Don't have an account?{" "}
+                    <Link
+                        to="/register"
+                        className="text-[#FF5733] font-black hover:underline"
+                    >
+                        Sign Up
+                    </Link>
+                </p>
+            </div>
         </form>
     );
 
