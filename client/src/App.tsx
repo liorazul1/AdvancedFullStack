@@ -7,6 +7,8 @@ import { lazy, Suspense } from 'react';
 // מייבא את קומפוננטת הניווט הראשית
 import Navbar from './components/Navbar';
 
+import Footer from "./components/Footer";
+
 // מייבא קומפוננטה שמגנה על דפים שדורשים התחברות
 import PrivateRoute from './components/PrivateRoute';
 
@@ -18,8 +20,8 @@ const Home = lazy(() => import('./pages/Home'));
 const ExplorePage = lazy(() => import('./pages/ExplorePage'));
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
-const RestaurantDetail = lazy(() => import('./pages/RestaurantDetail'));
-const RateRestaurant = lazy(() => import('./pages/RateRestaurant'));
+const RestaurantDetails = lazy(() => import('./pages/RestaurantDetails'));
+const AddReview = lazy(() => import('./pages/AddReview'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 // קומפוננטת App מגדירה את מבנה הניווט הראשי של האתר
@@ -35,14 +37,15 @@ function App() {
           <Route path="/explore" element={<ExplorePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/restaurants/:id" element={<RestaurantDetail />} />
+          <Route path="/restaurants/:id" element={<RestaurantDetails />} />
+
 
           {/* נתיב מוגן - רק משתמש מחובר יכול לדרג מסעדה */}
           <Route
             path="/restaurants/:id/rate"
             element={
               <PrivateRoute>
-                <RateRestaurant />
+                <AddReview />
               </PrivateRoute>
             }
           />
@@ -51,6 +54,8 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
+      
+      <Footer />
     </>
   );
 }

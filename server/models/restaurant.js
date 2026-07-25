@@ -55,9 +55,6 @@ const restaurantSchema = new Schema(
       default: []
     },
 
-    bookingUrl: {
-      type: String
-    }
   },
   {
     timestamps: true
