@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { ArrowRight, Check } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
+import { useAuth } from "../context/AuthContext";
 
 interface RegisterErrors {
     username?: string;
@@ -38,6 +39,8 @@ const priceRanges = ["$", "$$", "$$$", "$$$$"];
 function RegisterForm() {
 
     const navigate = useNavigate();
+
+    const { login } = useAuth();
 
     const [formData, setFormData] = useState({
         username: "",
@@ -132,7 +135,7 @@ function RegisterForm() {
             setServerError("");
 
 
-            await api.post("/auth/register", {
+            const { data } = await api.post("/auth/register", {
                 username: formData.username,
                 email: formData.email,
                 password: formData.password,
@@ -141,8 +144,9 @@ function RegisterForm() {
                 priceRangePreference: priceRange,
             });
 
+            login(data.user, data.token);
 
-            navigate("/login");
+            navigate("/");
 
 
         } catch (err: any) {
@@ -294,8 +298,8 @@ function RegisterForm() {
                             type="button"
                             onClick={() => toggleCuisine(cuisine)}
                             className={`p-4 rounded-2xl font-black text-sm transition-all hover:scale-[1.02] hover:shadow-lg ${selectedCuisines.includes(cuisine)
-                                    ? "bg-[#FF5733] text-white shadow-xl"
-                                    : "bg-white border-2 border-[#2d2d2d]/10 text-[#2d2d2d]"
+                                ? "bg-[#FF5733] text-white shadow-xl"
+                                : "bg-white border-2 border-[#2d2d2d]/10 text-[#2d2d2d]"
                                 }`}
                         >
 
@@ -329,8 +333,8 @@ function RegisterForm() {
                             type="button"
                             onClick={() => setPriceRange(price)}
                             className={`py-4 rounded-2xl font-black transition-all hover:scale-[1.02] ${priceRange === price
-                                    ? "bg-[#FF5733] text-white shadow-xl"
-                                    : "bg-white border-2 border-[#2d2d2d]/10 text-[#2d2d2d]"
+                                ? "bg-[#FF5733] text-white shadow-xl"
+                                : "bg-white border-2 border-[#2d2d2d]/10 text-[#2d2d2d]"
                                 }`}
                         >
                             {price}
@@ -363,8 +367,8 @@ function RegisterForm() {
                             type="button"
                             onClick={() => toggleVibe(vibe)}
                             className={`p-4 rounded-2xl font-black text-sm transition-all hover:scale-[1.02] hover:shadow-lg ${selectedVibes.includes(vibe)
-                                    ? "bg-[#2d2d2d] text-white shadow-xl"
-                                    : "bg-white border-2 border-[#2d2d2d]/10 text-[#2d2d2d]"
+                                ? "bg-[#2d2d2d] text-white shadow-xl"
+                                : "bg-white border-2 border-[#2d2d2d]/10 text-[#2d2d2d]"
                                 }`}
                         >
 

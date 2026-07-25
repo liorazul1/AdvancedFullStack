@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import api from '../services/api';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 // מגדיר אילו שגיאות יכולות להיות בטופס
 interface LoginErrors {
@@ -20,6 +21,10 @@ function LoginForm() {
 
     // שומר הודעת שגיאה שמתקבלת מהשרת
     const [serverError, setServerError] = useState('');
+
+    const navigate = useNavigate();
+
+    const { login } = useAuth();
 
     // פונקציה שבודקת האם הנתונים שהוזנו תקינים
     const validate = () => {
@@ -62,9 +67,10 @@ function LoginForm() {
             const { data } = await api.post('/auth/login', formData);
 
             // שומר את הטוקן שהשרת החזיר כדי שהמשתמש יישאר מחובר
-            localStorage.setItem('token', data.token);
+            login(data.user, data.token);
 
-            // בהמשך נעדכן גם את מצב ההתחברות של האפליקציה
+            // מעבר לעמוד הראשי לאחר התחברות מוצלחת
+            navigate('/explore');
 
         } catch (err: any) {
 

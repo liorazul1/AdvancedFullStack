@@ -25,11 +25,11 @@ const corsOptions = {
 };
 
 // Middleware גלובלי
+app.use(cors(corsOptions)); // מפעיל את הגדרות ה-CORS
 app.use(helmet()); // מוסיף Headers אבטחה לשרת
 app.use('/api', apiLimiter); // מגביל כמות בקשות לכל נתיבי ה-API
 app.use('/api/auth/login', authLimiter); // מגביל ניסיונות התחברות
 app.use('/api/auth/register', authLimiter); // מגביל ניסיונות הרשמה
-app.use(cors(corsOptions)); // מפעיל את הגדרות ה-CORS
 app.use(express.json()); // מאפשר לשרת לקרוא JSON מהלקוח
 app.use(logger); // מדפיס בקשות לקונסול
 

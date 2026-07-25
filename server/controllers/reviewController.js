@@ -4,7 +4,10 @@ const Review = require('../models/Review');
 // יצירת ביקורת חדשה
 exports.createReview = async (req, res, next) => {
   try {
-    const review = await Review.create(req.body);
+    const review = await Review.create({
+      ...req.body,
+      user: req.user._id
+    });
 
     res.status(201).json({
       success: true,
