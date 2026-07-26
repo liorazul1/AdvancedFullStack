@@ -4,11 +4,7 @@ const Joi = require('joi');
 // סכמת ולידציה ליצירת ביקורת חדשה
 // המטרה היא לוודא שהנתונים תקינים לפני שהם מגיעים ל-Controller ול-MongoDB
 const createReviewSchema = Joi.object({
-  user: Joi.string().required()
-    .messages({
-      'any.required': 'User id is required'
-    }),
-
+  
   restaurant: Joi.string().required()
     .messages({
       'any.required': 'Restaurant id is required'

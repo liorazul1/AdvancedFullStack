@@ -1,18 +1,48 @@
-// מייבא את מודל הביקורת כדי לבצע פעולות מול MongoDB
+// ייבוא מודל הביקורת
 const Review = require('../models/Review');
+// ייבוא מודל מסעדה
+const Restaurant = require('../models/Restaurant');
 
 // יצירת ביקורת חדשה
 exports.createReview = async (req, res, next) => {
   try {
+
     const review = await Review.create({
       ...req.body,
       user: req.user._id
     });
 
+
+    // שליפת כל הביקורות של המסעדה לצורך חישוב ממוצע
+    const reviews = await Review.find({
+      restaurant: review.restaurant
+    });
+
+
+    // חישוב ממוצע הדירוגים
+    const averageRating =
+      reviews.reduce(
+        (sum, item) => sum + item.rating,
+        0
+      ) / reviews.length;
+
+
+    // עדכון המסעדה עם הדירוג החדש וכמות הביקורות
+    await Restaurant.findByIdAndUpdate(
+      review.restaurant,
+      {
+        rating: Number(averageRating.toFixed(1)),
+        reviewCount: reviews.length
+      }
+    );
+
+
     res.status(201).json({
       success: true,
       data: review
     });
+
+
   } catch (error) {
     next(error);
   }
