@@ -1,16 +1,21 @@
 const express = require('express');
 const router = express.Router();
 
+
 const {
   createUser,
   getAllUsers,
   getUserById,
   updateUser,
-  deleteUser
+  deleteUser,
+  getProfile,
+  updateProfile
 } = require('../controllers/userController');
 
 const validate = require('../middleware/validate');
 const { createUserSchema } = require('../validation/userValidation');
+// מייבא את Middleware ההגנה שבודק JWT
+const { protect } = require('../middleware/authMiddleware');
 
 // User Routes
 
@@ -24,8 +29,14 @@ router.post(
 // שליפת כל המשתמשים - Read
 router.get('/', getAllUsers);
 
+// שליפת פרופיל המשתמש המחובר - Read
+router.get('/profile', protect, getProfile);
+
 // שליפת משתמש לפי מזהה - Read
 router.get('/:id', getUserById);
+
+// עדכון פרופיל המשתמש המחובר - Update
+router.put('/profile', protect, updateProfile);
 
 // עדכון משתמש לפי מזהה - Update
 router.put('/:id', updateUser);

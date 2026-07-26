@@ -22,6 +22,7 @@ const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
 const RestaurantDetails = lazy(() => import('./pages/RestaurantDetails'));
 const AddReview = lazy(() => import('./pages/AddReview'));
+const Profile = lazy(() => import('./pages/Profile'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 // קומפוננטת App מגדירה את מבנה הניווט הראשי של האתר
@@ -50,11 +51,21 @@ function App() {
             }
           />
 
+          {/* נתיב מוגן - פרופיל משתמש מחובר */}
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            }
+          />
+
           {/* נתיב ברירת מחדל לכל כתובת שלא קיימת */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
-      
+
       <Footer />
     </>
   );
