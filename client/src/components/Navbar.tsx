@@ -3,79 +3,83 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
-    const auth = useAuth();
+  const auth = useAuth();
 
-    if (!auth) {
-        return null;
-    }
+  if (!auth) {
+    return null;
+  }
 
-    const { user, logout } = auth;
+  const { user, logout } = auth;
 
-    return (
-        <nav className="bg-white/98 backdrop-blur-2xl border-b border-[#2d2d2d]/5 sticky top-0 z-50">
-            <div className="max-w-7xl mx-auto px-6">
-                <div className="flex items-center justify-between h-20">
+  return (
+    <nav className="bg-white/98 backdrop-blur-2xl border-b border-[#2d2d2d]/5 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex items-center justify-between h-20">
 
-                    <div className="flex items-center gap-16">
-                        <Link
-                            to="/"
-                            className="flex items-center hover:opacity-80 transition-opacity"
-                        >
-                            <span className="text-[32px] font-black tracking-[-0.03em]">
-                                <span className="text-[#2d2d2d]">Tasty</span>
-                                <span className="text-[#FF5733]">Match</span>
-                            </span>
-                        </Link>
+          <div className="flex items-center gap-16">
+            <Link
+              to="/"
+              className="flex items-center hover:opacity-80 transition-opacity"
+            >
+              <span className="text-[32px] font-black tracking-[-0.03em]">
+                <span className="text-[#2d2d2d]">Tasty</span>
+                <span className="text-[#FF5733]">Match</span>
+              </span>
+            </Link>
 
-                        <Link
-                            to="/explore"
-                            className="text-base font-black text-[#2d2d2d]/70 hover:text-[#FF5733] transition-colors"
-                        >
-                            Explore
-                        </Link>
-                    </div>
+            <Link
+              to="/explore"
+              className="text-base font-black text-[#2d2d2d]/70 hover:text-[#FF5733] transition-colors"
+            >
+              Explore
+            </Link>
+          </div>
 
-                    <div className="flex items-center gap-4">
-                        {user ? (
-                            <>
-                                <div className="flex items-center gap-2 px-5 py-3 bg-[#FAFAFA] rounded-full">
-                                    <User className="w-5 h-5 text-[#2d2d2d]/60" />
-                                    <span className="text-sm font-black text-[#2d2d2d]">
-                                        {user.username}
-                                    </span>
-                                </div>
+          <div className="flex items-center gap-4">
+            {user ? (
+              <>
+                <Link
+                  to="/profile"
+                  className="flex items-center gap-2 px-5 py-3 bg-[#FAFAFA] rounded-full hover:bg-[#FF5733]/10 transition-all"
+                >
+                  <User className="w-5 h-5 text-[#2d2d2d]/60" />
 
-                                <button
-                                    onClick={logout}
-                                    className="flex items-center gap-2 px-6 py-3 rounded-full text-base font-black text-[#2d2d2d] hover:bg-[#FAFAFA] transition-colors"
-                                >
-                                    <LogOut className="w-4 h-4" />
-                                    Logout
-                                </button>
-                            </>
-                        ) : (
-                            <>
-                                <Link
-                                    to="/login"
-                                    className="px-6 py-3 rounded-full text-base font-black text-[#2d2d2d] hover:bg-[#FAFAFA] transition-colors"
-                                >
-                                    Login
-                                </Link>
+                  <span className="text-sm font-black text-[#2d2d2d]">
+                    {user.username}
+                  </span>
+                </Link>
 
-                                <Link
-                                    to="/register"
-                                    className="px-6 py-3 rounded-full bg-[#2d2d2d] text-white text-base font-black hover:bg-[#2d2d2d]/90 hover:scale-[1.02] transition-all shadow-lg"
-                                >
-                                    Sign Up
-                                </Link>
-                            </>
-                        )}
-                    </div>
+                <button
+                  onClick={logout}
+                  className="flex items-center gap-2 px-6 py-3 rounded-full text-base font-black text-[#2d2d2d] hover:bg-[#FAFAFA] transition-colors"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="px-6 py-3 rounded-full text-base font-black text-[#2d2d2d] hover:bg-[#FAFAFA] transition-colors"
+                >
+                  Login
+                </Link>
 
-                </div>
-            </div>
-        </nav>
-    );
+                <Link
+                  to="/register"
+                  className="px-6 py-3 rounded-full bg-[#2d2d2d] text-white text-base font-black hover:bg-[#2d2d2d]/90 hover:scale-[1.02] transition-all shadow-lg"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
+
+        </div>
+      </div>
+    </nav>
+  );
 };
 
 export default Navbar;
