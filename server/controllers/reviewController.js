@@ -85,6 +85,33 @@ exports.getReviewsByRestaurant = async (req, res, next) => {
   }
 };
 
+// שליפת כל הביקורות של המשתמש המחובר
+exports.getMyReviews = async (req, res, next) => {
+
+  try {
+
+    const reviews = await Review.find({
+      user: req.user._id
+    })
+      .populate('restaurant', 'name city image')
+      .sort('-createdAt');
+
+
+    res.status(200).json({
+      success: true,
+      count: reviews.length,
+      data: reviews
+    });
+
+
+  } catch (error) {
+
+    next(error);
+
+  }
+
+};
+
 // עדכון ביקורת לפי ID
 exports.updateReview = async (req, res, next) => {
   try {

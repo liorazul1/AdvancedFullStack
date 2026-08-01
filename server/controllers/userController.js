@@ -96,6 +96,7 @@ exports.deleteUser = async (req, res, next) => {
     next(error);
   }
 };
+
 // שליפת פרופיל המשתמש המחובר
 exports.getProfile = async (req, res, next) => {
   try {
@@ -141,5 +142,60 @@ exports.updateProfile = async (req, res, next) => {
 
   } catch (error) {
     next(error);
+  }
+};
+
+// שינוי סיסמה למשתמש המחובר
+exports.changePassword = async (req, res, next) => {
+  try {
+
+    const { currentPassword, newPassword } = req.body;
+
+
+    // שליפת המשתמש כולל הסיסמה המוצפנת
+    const user = await User.findById(req.user._id)
+      .select('+password');
+
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+
+    // בדיקה שהסיסמה הנוכחית נכונה
+    const isPasswordCorrect = await user.comparePassword(
+      currentPassword
+    );
+
+
+    if (!isPasswordCorrect) {
+      return res.status(400).json({
+        success: false,
+        message: 'Current password is incorrect'
+      });
+    }
+
+
+    // החלפת הסיסמה
+    user.password = newPassword;
+
+
+    // save יפעיל את bcrypt pre-save שכבר קיים לך במודל
+    await user.save();
+
+
+    res.status(200).json({
+      success: true,
+      message: 'Password changed successfully'
+    });
+
+
+  } catch (error) {
+
+    next(error);
+
   }
 };

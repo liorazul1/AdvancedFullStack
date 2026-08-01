@@ -2,6 +2,14 @@ import { useState } from "react";
 import { useFetch } from "../hooks/useFetch";
 import { useEffect } from "react";
 import api from "../services/api";
+import { useNavigate } from "react-router-dom";
+
+// מייבא Hooks לעבודה מול Redux
+import { useDispatch, useSelector } from "react-redux";
+
+// מייבא את טיפוסי Redux ואת פעולת שליפת הביקורות
+import type { RootState, AppDispatch } from "../store/store";
+import { fetchMyReviews } from "../store/reviewsSlice";
 
 // מייבא קומפוננטות טעינה ושגיאה
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -18,7 +26,34 @@ function Profile() {
         refetch,
     } = useFetch("/users/profile");
 
+    // מאפשר שליחת פעולות ל-Redux
+    const dispatch = useDispatch<AppDispatch>();
+
+    // מאפשר ניווט לעמודים אחרים באפליקציה
+    const navigate = useNavigate();
+
+
+    // שליפת הביקורות מתוך Redux Store
+    const reviews = useSelector(
+        (state: RootState) => state.reviews.reviews
+    );
+
     const [isEditing, setIsEditing] = useState(false);
+
+    // מצב פתיחה וסגירה של שינוי סיסמה
+    const [showPasswordChange, setShowPasswordChange] = useState(false);
+
+
+    // שמירת נתוני שינוי הסיסמה
+    const [passwordData, setPasswordData] = useState({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+    });
+
+
+    // הודעת הצלחה או שגיאה
+    const [passwordMessage, setPasswordMessage] = useState("");
 
     // שומר האם המשתמש נמצא במצב עריכת העדפות
     const [isEditingPreferences, setIsEditingPreferences] = useState(false);
@@ -59,6 +94,13 @@ function Profile() {
 
     }, [user]);
 
+    // שליפת הביקורות של המשתמש המחובר בעת טעינת העמוד
+    useEffect(() => {
+
+        dispatch(fetchMyReviews());
+
+    }, [dispatch]);
+
     const handleSaveProfile = async () => {
 
         try {
@@ -72,6 +114,58 @@ function Profile() {
         } catch (error) {
 
             console.log(error);
+
+        }
+
+    };
+
+    // שינוי סיסמת משתמש
+    const handleChangePassword = async () => {
+
+        if (
+            passwordData.newPassword !==
+            passwordData.confirmPassword
+        ) {
+            setPasswordMessage("Passwords do not match");
+            return;
+        }
+
+        // בדיקה שהסיסמה החדשה עומדת בדרישות המינימום
+        if (passwordData.newPassword.length < 6) {
+
+            setPasswordMessage(
+                "Password must be at least 6 characters"
+            );
+
+            return;
+        }
+        
+        try {
+
+            await api.put("/users/change-password", {
+                currentPassword: passwordData.currentPassword,
+                newPassword: passwordData.newPassword
+            });
+
+
+            setPasswordMessage(
+                "Password changed successfully"
+            );
+
+
+            setPasswordData({
+                currentPassword: "",
+                newPassword: "",
+                confirmPassword: "",
+            });
+
+
+        } catch (error: any) {
+
+            setPasswordMessage(
+                error.response?.data?.message ||
+                "Failed to change password"
+            );
 
         }
 
@@ -226,6 +320,7 @@ function Profile() {
 
 
                     <button
+                        onClick={() => setShowPasswordChange(!showPasswordChange)}
                         className="
                         px-6 py-3
                         bg-[#FAFAFA]
@@ -282,7 +377,122 @@ function Profile() {
 
                     )
                 }
+                {
+                    showPasswordChange && (
 
+                        <div className="bg-white rounded-3xl shadow-xl border border-[#2d2d2d]/5 p-10 mb-8">
+
+                            <h2 className="text-2xl font-black text-[#2d2d2d] mb-8">
+                                Change Password
+                            </h2>
+
+
+                            <div className="space-y-5">
+
+
+                                <input
+                                    type="password"
+                                    placeholder="Current Password"
+                                    value={passwordData.currentPassword}
+                                    onChange={(e) =>
+                                        setPasswordData({
+                                            ...passwordData,
+                                            currentPassword: e.target.value
+                                        })
+                                    }
+                                    className="
+                    w-full
+                    px-5
+                    py-3
+                    rounded-2xl
+                    bg-[#FAFAFA]
+                    border-2
+                    border-[#2d2d2d]/10
+                    focus:border-[#FF5733]
+                    focus:outline-none"
+                                />
+
+
+                                <input
+                                    type="password"
+                                    placeholder="New Password"
+                                    value={passwordData.newPassword}
+                                    onChange={(e) =>
+                                        setPasswordData({
+                                            ...passwordData,
+                                            newPassword: e.target.value
+                                        })
+                                    }
+                                    className="
+                    w-full
+                    px-5
+                    py-3
+                    rounded-2xl
+                    bg-[#FAFAFA]
+                    border-2
+                    border-[#2d2d2d]/10
+                    focus:border-[#FF5733]
+                    focus:outline-none"
+                                />
+
+
+                                <input
+                                    type="password"
+                                    placeholder="Confirm New Password"
+                                    value={passwordData.confirmPassword}
+                                    onChange={(e) =>
+                                        setPasswordData({
+                                            ...passwordData,
+                                            confirmPassword: e.target.value
+                                        })
+                                    }
+                                    className="
+                    w-full
+                    px-5
+                    py-3
+                    rounded-2xl
+                    bg-[#FAFAFA]
+                    border-2
+                    border-[#2d2d2d]/10
+                    focus:border-[#FF5733]
+                    focus:outline-none"
+                                />
+
+
+                                <button
+                                    onClick={handleChangePassword}
+                                    className="
+                    px-6
+                    py-3
+                    bg-[#FF5733]
+                    text-white
+                    font-black
+                    rounded-2xl
+                    hover:scale-105
+                    transition-all"
+                                >
+                                    Save Password
+                                </button>
+
+
+                                {
+                                    passwordMessage && (
+
+                                        <p className="text-[#2d2d2d] font-bold">
+                                            {passwordMessage}
+                                        </p>
+
+                                    )
+                                }
+
+
+                            </div>
+
+
+                        </div>
+
+                    )
+                }
 
 
                 {/* פרטים אישיים */}
@@ -380,9 +590,6 @@ function Profile() {
                 </section>
 
 
-
-
-
                 {/* העדפות אוכל */}
                 <section className="bg-white rounded-3xl shadow-xl border border-[#2d2d2d]/5 p-10">
 
@@ -459,14 +666,12 @@ function Profile() {
                                                             ? cuisineColors[cuisine]
                                                             : "#FAFAFA"
                                                 }}
-                                                className="
-                px-5
-                py-2
-                rounded-full
-                font-bold
-                transition-all
-                hover:scale-105
-                "
+                                                className="px-5
+                                                py-2
+                                                rounded-full
+                                                font-bold
+                                                transition-all
+                                                hover:scale-105"
                                             >
                                                 {cuisine}
                                             </button>
@@ -485,15 +690,14 @@ function Profile() {
                                                     style={{
                                                         backgroundColor: cuisineColors[cuisine]
                                                     }}
-                                                    className="
-                    px-5
-                    py-2
-                    rounded-full
-                    text-white
-                    font-bold
-                    hover:scale-105
-                    hover:shadow-lg
-                    transition-all"
+                                                    className="px-5
+                                                    py-2
+                                                    rounded-full
+                                                    text-white
+                                                    font-bold
+                                                    hover:scale-105
+                                                    hover:shadow-lg
+                                                    transition-all"
                                                 >
                                                     {cuisine}
                                                 </span>
@@ -628,14 +832,13 @@ function Profile() {
                                                         priceRangePreference: price
                                                     })
                                                 }
-                                                className={`
-                    px-5
-                    py-3
-                    rounded-2xl
-                    font-black
-                    transition-all
-                    hover:scale-105
-                    ${preferences.priceRangePreference === price
+                                                className={`px-5
+                                                    py-3
+                                                    rounded-2xl
+                                                    font-black
+                                                    transition-all
+                                                    hover:scale-105
+                                                    ${preferences.priceRangePreference === price
                                                         ? "bg-[#FF5733] text-white"
                                                         : "bg-[#FAFAFA] text-[#2d2d2d]"
                                                     }
@@ -665,7 +868,83 @@ function Profile() {
 
                 </section>
 
+                {/* ביקורות שהמשתמש כתב */}
+                <section className="bg-white rounded-3xl shadow-xl border border-[#2d2d2d]/5 p-10 mt-8">
 
+
+                    <h2 className="text-2xl font-black text-[#2d2d2d] mb-8">
+                        My Reviews
+                    </h2>
+
+
+                    <div className="space-y-6">
+
+
+                        {reviews?.length ? (
+
+                            reviews.map((review: any) => (
+
+                                <div
+                                    key={review._id}
+                                    onClick={() =>
+                                        navigate(`/restaurants/${review.restaurant._id}`)
+                                    }
+                                    className="bg-[#FAFAFA]
+                                    rounded-2xl
+                                    p-6
+                                    cursor-pointer
+                                    hover:shadow-lg
+                                    hover:scale-[1.01]
+                                    transition-all"
+                                >
+
+                                    <div className="flex justify-between items-center mb-4">
+
+
+                                        <div>
+
+                                            <h3 className="text-xl font-black text-[#2d2d2d]">
+                                                {review.restaurant.name}
+                                            </h3>
+
+
+                                            <p className="text-[#2d2d2d]/50 font-medium">
+                                                {review.restaurant.city}
+                                            </p>
+
+                                        </div>
+
+
+                                        <div className="text-[#FF5733] font-black">
+                                            ⭐ {review.rating}
+                                        </div>
+
+
+                                    </div>
+
+
+                                    <p className="text-[#2d2d2d] font-medium">
+                                        {review.comment}
+                                    </p>
+
+
+                                </div>
+
+                            ))
+
+                        ) : (
+
+                            <p className="text-[#2d2d2d]/50">
+                                You haven't written any reviews yet
+                            </p>
+
+                        )}
+
+
+                    </div>
+
+
+                </section>
 
             </div>
 

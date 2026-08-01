@@ -9,7 +9,8 @@ const {
   updateUser,
   deleteUser,
   getProfile,
-  updateProfile
+  updateProfile,
+  changePassword
 } = require('../controllers/userController');
 
 const validate = require('../middleware/validate');
@@ -37,6 +38,9 @@ router.get('/:id', getUserById);
 
 // עדכון פרופיל המשתמש המחובר - Update
 router.put('/profile', protect, updateProfile);
+
+// שינוי סיסמה למשתמש המחובר - Update
+router.put('/change-password', protect, changePassword);
 
 // עדכון משתמש לפי מזהה - Update
 router.put('/:id', updateUser);

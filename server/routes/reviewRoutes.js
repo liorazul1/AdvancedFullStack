@@ -9,6 +9,7 @@ const {
   createReview,
   getAllReviews,
   getReviewsByRestaurant,
+  getMyReviews,
   updateReview,
   deleteReview
 } = require('../controllers/reviewController');
@@ -34,6 +35,9 @@ router.get('/', getAllReviews);
 
 // שליפת ביקורות לפי מסעדה - Read
 router.get('/restaurant/:restaurantId', getReviewsByRestaurant);
+
+// שליפת הביקורות של המשתמש המחובר - Read
+router.get('/my-reviews', protect, getMyReviews);
 
 // עדכון ביקורת לפי מזהה - Update
 router.put('/:id', protect, updateReview);
