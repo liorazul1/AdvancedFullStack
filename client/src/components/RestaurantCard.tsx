@@ -36,9 +36,13 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
         >
             <div className="relative h-72 overflow-hidden">
                 <img
-                    src={restaurant.image}
+                    src={
+                        restaurant.image
+                            ? `http://localhost:5000${restaurant.image}`
+                            : undefined
+                    }
                     alt={restaurant.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover"
                 />
 
                 <span

@@ -19,12 +19,16 @@ const { createRestaurantSchema } = require('../validation/restaurantValidation')
 // מייבא את Middleware ההגנה שבודק JWT
 const { protect } = require('../middleware/authMiddleware');
 
+// מייבא Middleware להעלאת תמונות
+const upload = require('../middleware/uploadMiddleware');
+
 // Restaurant Routes
 
 // יצירת מסעדה חדשה - Create
 router.post(
   '/',
   protect,
+  upload.single('image'),
   validate(createRestaurantSchema),
   createRestaurant
 );

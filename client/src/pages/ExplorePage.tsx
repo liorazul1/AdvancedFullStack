@@ -8,6 +8,7 @@ import type { RootState, AppDispatch } from "../store/store";
 import RestaurantCard from "../components/RestaurantCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ErrorMessage from "../components/ErrorMessage";
+import AddRestaurant from "../components/AddRestaurant";
 
 
 const priceRanges = ["$", "$$", "$$$", "$$$$"];
@@ -52,6 +53,8 @@ function ExplorePage() {
 
 
   const [search, setSearch] = useState("");
+
+  const [showAddRestaurant, setShowAddRestaurant] = useState(false);
 
   const [selectedPrices, setSelectedPrices] = useState<string[]>([]);
   const [selectedCuisines, setSelectedCuisines] = useState<string[]>([]);
@@ -140,19 +143,33 @@ function ExplorePage() {
       <div className="max-w-[1400px] mx-auto px-12 py-24">
 
 
-        <div className="mb-12">
+        <div className="mb-12 flex justify-between items-center">
 
-          <h1 className="text-6xl font-black text-[#2d2d2d] tracking-tight mb-3">
-            Explore Restaurants
-          </h1>
+          <div>
+            <h1 className="text-6xl font-black text-[#2d2d2d] tracking-tight mb-3">
+              Explore Restaurants
+            </h1>
 
-          <p className="text-xl text-[#2d2d2d]/50 font-medium">
-            {filteredRestaurants?.length || 0} restaurants found
-          </p>
+            <p className="text-xl text-[#2d2d2d]/50 font-medium">
+              {filteredRestaurants?.length || 0} restaurants found
+            </p>
+          </div>
+
+
+          <button
+            onClick={() => setShowAddRestaurant(true)}
+            className="px-6 py-4 rounded-full bg-[#FF5733] text-white font-black hover:scale-[1.02] transition-all"
+          >
+            + Suggest Restaurant
+          </button>
 
         </div>
 
-
+        {showAddRestaurant && (
+          <AddRestaurant
+            onClose={() => setShowAddRestaurant(false)}
+          />
+        )}
 
         <div className="mb-12 relative">
 

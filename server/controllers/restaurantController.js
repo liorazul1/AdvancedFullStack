@@ -4,12 +4,23 @@ const Restaurant = require('../models/Restaurant');
 // יצירת מסעדה חדשה
 exports.createRestaurant = async (req, res, next) => {
   try {
-    const restaurant = await Restaurant.create(req.body);
+
+    const restaurant = await Restaurant.create({
+      ...req.body,
+
+      // שמירת נתיב התמונה שהועלתה באמצעות Multer
+      image: req.file
+        ? `/uploads/${req.file.filename}`
+        : ''
+    });
+
 
     res.status(201).json({
       success: true,
       data: restaurant
     });
+
+
   } catch (error) {
     next(error);
   }
