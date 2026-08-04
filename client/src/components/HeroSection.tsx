@@ -1,8 +1,22 @@
+import { useState } from 'react';
 import { Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
     const navigate = useNavigate();
+
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if (!searchTerm.trim()) {
+            navigate('/explore');
+            return;
+        }
+
+        navigate(`/explore?search=${encodeURIComponent(searchTerm.trim())}`);
+    };
 
     return (
         <section className="relative bg-white py-24 px-12 border-b border-[#2d2d2d]/5">
@@ -17,17 +31,19 @@ const HeroSection = () => {
                     Community-rated restaurants. Save, rate, discover.
                 </p>
 
-                <div className="max-w-4xl mx-auto mb-12">
+                <form onSubmit={handleSearch} className="max-w-4xl mx-auto mb-12">
                     <div className="relative">
                         <Search className="absolute left-8 top-1/2 -translate-y-1/2 w-6 h-6 text-[#2d2d2d]/30" />
 
                         <input
                             type="text"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
                             placeholder="Search by name, cuisine, location..."
                             className="w-full pl-20 pr-8 py-7 bg-[#FAFAFA] rounded-3xl border-2 border-[#2d2d2d]/5 focus:border-[#2d2d2d]/20 focus:outline-none focus:bg-white transition-all text-[#2d2d2d] placeholder-[#2d2d2d]/30 text-xl font-medium shadow-sm"
                         />
                     </div>
-                </div>
+                </form>
 
                 <div className="flex items-center justify-center gap-5">
                     <button

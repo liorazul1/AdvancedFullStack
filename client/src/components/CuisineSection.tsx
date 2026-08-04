@@ -29,7 +29,7 @@ const CuisineSection = () => {
             <div className="max-w-[1400px] mx-auto">
                 <div className="mb-16">
                     <h2 className="text-6xl font-black text-[#2d2d2d] mb-3 tracking-tight">
-                        Explore by Cuisine
+                        Browse by Cuisine
                     </h2>
 
                     <p className="text-xl text-[#2d2d2d]/50 font-medium">

@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Filter, Search, Star } from "lucide-react";
 
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRestaurants } from "../store/restaurantsSlice";
 import type { RootState, AppDispatch } from "../store/store";
@@ -17,26 +18,44 @@ const priceRanges = ["$", "$$", "$$$", "$$$$"];
 const cuisineOptions = [
   { name: "Italian", color: "#FF5733" },
   { name: "Asian", color: "#7D1935" },
-  { name: "Japanese", color: "#7D1935" },
-  { name: "French", color: "#FF6B9D" },
-  { name: "Mediterranean", color: "#3AAFA9" },
-  { name: "American", color: "#C8E64A" },
-  { name: "Fusion", color: "#E8B923" },
+  { name: "Burgers", color: "#C8E64A" },
+  { name: "Cocktails", color: "#E8B923" },
+  { name: "Cafes", color: "#FF6B9D" },
+  { name: "Desserts", color: "#2C7873" },
+  { name: "Mexican", color: "#FF8C42" },
+  { name: "Vegan", color: "#3AAFA9" },
 ];
 
+const locationOptions = [
+  { name: "Tel Aviv", color: "#FF5733" },
+  { name: "Jerusalem", color: "#7D1935" },
+  { name: "Haifa", color: "#3AAFA9" },
+  { name: "Eilat", color: "#E8B923" },
+  { name: "Herzliya", color: "#FF6B9D" },
+  { name: "Netanya", color: "#2C7873" },
+  { name: "Beer Sheva", color: "#FF8C42" },
+  { name: "Ashdod", color: "#C8E64A" },
+];
 
 const vibeOptions = [
-  { name: "Romantic", color: "#FF6B9D" },
-  { name: "Family", color: "#3AAFA9" },
-  { name: "Trendy", color: "#7D1935" },
-  { name: "Outdoor", color: "#C8E64A" },
+  { name: "Date Night", color: "#FF6B9D" },
+  { name: "With Friends", color: "#FF8C42" },
+  { name: "Family Dinner", color: "#3AAFA9" },
   { name: "Hidden Gems", color: "#E8B923" },
-  { name: "Rooftop", color: "#2C7873" },
+  { name: "Rooftop Views", color: "#2C7873" },
+  { name: "Trendy Bars", color: "#7D1935" },
+  { name: "Wine & Dine", color: "#6C5B7B" },
+  { name: "Outdoor Seating", color: "#C8E64A" },
 ];
-
 
 
 function ExplorePage() {
+  const [searchParams] = useSearchParams();
+
+  const searchFromUrl = searchParams.get("search") || "";
+  const cuisineFromUrl = searchParams.get("cuisine") || "";
+  const locationFromUrl = searchParams.get("location") || "";
+  const vibeFromUrl = searchParams.get("vibe") || "";
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -52,16 +71,22 @@ function ExplorePage() {
   }, [dispatch]);
 
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(searchFromUrl);
 
   const [showAddRestaurant, setShowAddRestaurant] = useState(false);
 
   const [selectedPrices, setSelectedPrices] = useState<string[]>([]);
   const [selectedCuisines, setSelectedCuisines] = useState<string[]>([]);
+  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [selectedVibes, setSelectedVibes] = useState<string[]>([]);
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
 
-
+  useEffect(() => {
+    setSearch(searchFromUrl);
+    setSelectedCuisines(cuisineFromUrl ? [cuisineFromUrl] : []);
+    setSelectedLocations(locationFromUrl ? [locationFromUrl] : []);
+    setSelectedVibes(vibeFromUrl ? [vibeFromUrl] : []);
+  }, [searchFromUrl, cuisineFromUrl, vibeFromUrl]);
 
   if (loading) return <LoadingSpinner />;
 
@@ -71,7 +96,7 @@ function ExplorePage() {
 
   const toggleFilter = (
     value: string,
-    setter: React.Dispatch<React.SetStateAction<string[]>>
+    setter: Dispatch<SetStateAction<string[]>>
   ) => {
 
     setter((prev) =>
@@ -101,6 +126,9 @@ function ExplorePage() {
       selectedCuisines.length === 0 ||
       selectedCuisines.includes(restaurant.cuisine);
 
+    const locationMatch =
+      selectedLocations.length === 0 ||
+      selectedLocations.includes(restaurant.city);
 
     const vibeMatch =
       selectedVibes.length === 0 ||
@@ -118,6 +146,7 @@ function ExplorePage() {
       searchMatch &&
       priceMatch &&
       cuisineMatch &&
+      locationMatch &&
       vibeMatch &&
       ratingMatch
     );
@@ -129,6 +158,7 @@ function ExplorePage() {
   const clearFilters = () => {
     setSelectedPrices([]);
     setSelectedCuisines([]);
+    setSelectedLocations([]);
     setSelectedVibes([]);
     setSelectedRating(null);
     setSearch("");
@@ -252,7 +282,20 @@ function ExplorePage() {
 
               </FilterSection>
 
-
+              <FilterSection title="Location">
+                {locationOptions.map(location => (
+                  <FilterButton
+                    key={location.name}
+                    color={location.color}
+                    active={selectedLocations.includes(location.name)}
+                    onClick={() =>
+                      toggleFilter(location.name, setSelectedLocations)
+                    }
+                  >
+                    {location.name}
+                  </FilterButton>
+                ))}
+              </FilterSection>
 
               <FilterSection title="Vibes">
 
@@ -277,7 +320,7 @@ function ExplorePage() {
 
               <FilterSection title="Rating">
 
-                {[4.5, 4, 3.5].map(rating => (
+                {[5, 4, 3, 2, 1].map(rating => (
 
                   <FilterButton
                     key={rating}
@@ -290,7 +333,7 @@ function ExplorePage() {
                       )
                     }
                   >
-                    {rating}
+                    {rating}+
                     <Star className="inline w-4 h-4 fill-current ml-1" />
                   </FilterButton>
 
@@ -353,7 +396,7 @@ function FilterSection({
   children
 }: {
   title: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
 
   return (
@@ -382,7 +425,7 @@ function FilterButton({
   color,
   onClick
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   active: boolean;
   color?: string;
   onClick: () => void;
