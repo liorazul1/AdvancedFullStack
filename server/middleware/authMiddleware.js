@@ -2,7 +2,7 @@
 const jwt = require('jsonwebtoken');
 
 // מייבא את מודל המשתמש כדי לשלוף את המשתמש המחובר
-const User = require('../models/User');
+const User = require('../models/user');
 
 // Middleware שמגן על Routes ודורש Token תקין
 exports.protect = async (req, res, next) => {

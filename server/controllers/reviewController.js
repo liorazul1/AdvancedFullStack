@@ -1,7 +1,7 @@
 // ייבוא מודל הביקורת
-const Review = require('../models/Review');
+const Review = require('../models/review');
 // ייבוא מודל מסעדה
-const Restaurant = require('../models/Restaurant');
+const Restaurant = require('../models/restaurant');
 
 // יצירת ביקורת חדשה
 exports.createReview = async (req, res, next) => {

@@ -1,5 +1,5 @@
 // מייבא את מודל המשתמש כדי לבצע פעולות מול MongoDB
-const User = require('../models/User');
+const User = require('../models/user');
 
 // יצירת משתמש חדש
 exports.createUser = async (req, res, next) => {

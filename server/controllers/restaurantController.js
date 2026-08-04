@@ -1,5 +1,5 @@
 // מייבא את מודל המסעדה כדי לבצע פעולות מול MongoDB
-const Restaurant = require('../models/Restaurant');
+const Restaurant = require('../models/restaurant');
 
 // יצירת מסעדה חדשה
 exports.createRestaurant = async (req, res, next) => {

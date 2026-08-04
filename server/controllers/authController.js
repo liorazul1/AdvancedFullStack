@@ -1,5 +1,5 @@
 // מייבא את מודל המשתמש לצורך הרשמה והתחברות
-const User = require('../models/User');
+const User = require('../models/user');
 
 // מייבא את JWT לצורך יצירת Token למשתמש מחובר
 const jwt = require('jsonwebtoken');
