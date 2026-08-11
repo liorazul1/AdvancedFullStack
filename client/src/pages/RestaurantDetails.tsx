@@ -50,20 +50,20 @@ function RestaurantDetails() {
     const accentColor =
         cuisineColors[restaurant.cuisine] || "#FF5733";
 
-
+    const imageUrl = restaurant.image
+        ? `http://localhost:5000${restaurant.image}`
+        : "https://placehold.co/1080x500?text=Restaurant";
 
     return (
 
         <div className="min-h-screen bg-white">
 
 
-            {/* Hero Image */}
-
             <div className="relative h-[500px]">
 
 
                 <img
-                    src={restaurant.image || "https://placehold.co/1080x500?text=Restaurant"}
+                    src={imageUrl}
                     alt={restaurant.name}
                     className="w-full h-full object-cover"
                 />
