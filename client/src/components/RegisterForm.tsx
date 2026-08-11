@@ -10,31 +10,40 @@ interface RegisterErrors {
     password?: string;
     confirmPassword?: string;
 }
-
 const cuisines = [
-    "Italian",
-    "Asian",
-    "Burgers",
-    "Cafes",
-    "Desserts",
-    "Mexican",
-    "Vegan",
-    "Seafood",
+    { name: "Italian", color: "#FF5733" },
+    { name: "Asian", color: "#7D1935" },
+    { name: "Burgers", color: "#C8E64A" },
+    { name: "Cocktails", color: "#E8B923" },
+    { name: "Cafes", color: "#FF6B9D" },
+    { name: "Desserts", color: "#2C7873" },
+    { name: "Mexican", color: "#FF8C42" },
+    { name: "Vegan", color: "#3AAFA9" },
 ];
 
 const vibes = [
-    "Date Night",
-    "With Friends",
-    "Family",
-    "Hidden Gems",
-    "Rooftop",
-    "Trendy",
-    "Wine & Dine",
-    "Outdoor",
+    { name: "Date Night", color: "#FF6B9D" },
+    { name: "With Friends", color: "#FF8C42" },
+    { name: "Family Dinner", color: "#3AAFA9" },
+    { name: "Hidden Gems", color: "#E8B923" },
+    { name: "Rooftop Views", color: "#2C7873" },
+    { name: "Trendy Bars", color: "#7D1935" },
+    { name: "Wine & Dine", color: "#6C5B7B" },
+    { name: "Outdoor Seating", color: "#C8E64A" },
+];
+
+const cities = [
+    { name: "Tel Aviv", color: "#FF5733" },
+    { name: "Jerusalem", color: "#7D1935" },
+    { name: "Haifa", color: "#3AAFA9" },
+    { name: "Eilat", color: "#E8B923" },
+    { name: "Herzliya", color: "#FF6B9D" },
+    { name: "Netanya", color: "#2C7873" },
+    { name: "Beer Sheva", color: "#FF8C42" },
+    { name: "Ashdod", color: "#C8E64A" },
 ];
 
 const priceRanges = ["$", "$$", "$$$", "$$$$"];
-
 
 function RegisterForm() {
 
@@ -52,7 +61,8 @@ function RegisterForm() {
 
     const [selectedCuisines, setSelectedCuisines] = useState<string[]>([]);
     const [selectedVibes, setSelectedVibes] = useState<string[]>([]);
-    const [priceRange, setPriceRange] = useState("$$");
+    const [selectedCities, setSelectedCities] = useState<string[]>([]);
+    const [priceRange, setPriceRange] = useState<string[]>([]);
 
 
     const [errors, setErrors] = useState<RegisterErrors>({});
@@ -112,7 +122,21 @@ function RegisterForm() {
         );
 
     };
+    const toggleCity = (city: string) => {
+        setSelectedCities((prev) =>
+            prev.includes(city)
+                ? prev.filter((item) => item !== city)
+                : [...prev, city]
+        );
+    };
 
+    const togglePrice = (price: string) => {
+        setPriceRange((prev) =>
+            prev.includes(price)
+                ? prev.filter((item) => item !== price)
+                : [...prev, price]
+        );
+    };
 
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -141,6 +165,7 @@ function RegisterForm() {
                 password: formData.password,
                 favoriteCuisines: selectedCuisines,
                 favoriteVibes: selectedVibes,
+                favoriteCities: selectedCities,
                 priceRangePreference: priceRange,
             });
 
@@ -294,21 +319,29 @@ function RegisterForm() {
                     {cuisines.map((cuisine) => (
 
                         <button
-                            key={cuisine}
+                            key={cuisine.name}
                             type="button"
-                            onClick={() => toggleCuisine(cuisine)}
-                            className={`p-4 rounded-2xl font-black text-sm transition-all hover:scale-[1.02] hover:shadow-lg ${selectedCuisines.includes(cuisine)
-                                ? "bg-[#FF5733] text-white shadow-xl"
-                                : "bg-white border-2 border-[#2d2d2d]/10 text-[#2d2d2d]"
-                                }`}
+                            onClick={() => toggleCuisine(cuisine.name)}
+                            style={{
+                                backgroundColor: selectedCuisines.includes(cuisine.name) ? cuisine.color : "white",
+                                color: selectedCuisines.includes(cuisine.name) ? "white" : "#2d2d2d",
+                                borderColor: selectedCuisines.includes(cuisine.name) ? cuisine.color : "rgba(45,45,45,0.1)",
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = cuisine.color;
+                                e.currentTarget.style.color = "white";
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = selectedCuisines.includes(cuisine.name) ? cuisine.color : "white";
+                                e.currentTarget.style.color = selectedCuisines.includes(cuisine.name) ? "white" : "#2d2d2d";
+                            }}
+                            className="p-4 rounded-2xl font-black text-sm transition-all hover:scale-[1.02] hover:shadow-lg border-2"
                         >
-
-                            {selectedCuisines.includes(cuisine) && (
+                            {selectedCuisines.includes(cuisine.name) && (
                                 <Check className="inline w-4 h-4 mr-1" />
                             )}
 
-                            {cuisine}
-
+                            {cuisine.name}
                         </button>
 
                     ))}
@@ -316,37 +349,48 @@ function RegisterForm() {
                 </div>
 
             </div>
-
 
             <div>
-
-                <h2 className="text-2xl font-black text-[#2d2d2d] mb-6">
-                    Price Range Preference
+                <h2 className="text-2xl font-black text-[#2d2d2d] mb-2">
+                    Favorite Cities
                 </h2>
 
-                <div className="grid grid-cols-4 gap-3">
+                <p className="text-[#2d2d2d]/50 mb-6">
+                    Select your favorite dining cities
+                </p>
 
-                    {priceRanges.map((price) => (
-
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    {cities.map((city) => (
                         <button
-                            key={price}
+                            key={city.name}
                             type="button"
-                            onClick={() => setPriceRange(price)}
-                            className={`py-4 rounded-2xl font-black transition-all hover:scale-[1.02] ${priceRange === price
-                                ? "bg-[#FF5733] text-white shadow-xl"
-                                : "bg-white border-2 border-[#2d2d2d]/10 text-[#2d2d2d]"
-                                }`}
+                            onClick={() => toggleCity(city.name)}
+                            style={{
+                                backgroundColor: selectedCities.includes(city.name) ? city.color : "white",
+                                color: selectedCities.includes(city.name) ? "white" : "#2d2d2d",
+                                borderColor: selectedCities.includes(city.name) ? city.color : "rgba(45,45,45,0.1)",
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = city.color;
+                                e.currentTarget.style.color = "white";
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = selectedCities.includes(city.name) ? city.color : "white";
+                                e.currentTarget.style.color = selectedCities.includes(city.name) ? "white" : "#2d2d2d";
+                            }}
+                            className="p-4 rounded-2xl font-black text-sm transition-all hover:scale-[1.02] hover:shadow-lg border-2"
                         >
-                            {price}
+                            {selectedCities.includes(city.name) && (
+                                <Check className="inline w-4 h-4 mr-1" />
+                            )}
+
+                            {city.name}
                         </button>
-
                     ))}
-
                 </div>
-
+            
             </div>
-
-
+            
             <div>
 
                 <h2 className="text-2xl font-black text-[#2d2d2d] mb-2">
@@ -363,21 +407,29 @@ function RegisterForm() {
                     {vibes.map((vibe) => (
 
                         <button
-                            key={vibe}
+                            key={vibe.name}
                             type="button"
-                            onClick={() => toggleVibe(vibe)}
-                            className={`p-4 rounded-2xl font-black text-sm transition-all hover:scale-[1.02] hover:shadow-lg ${selectedVibes.includes(vibe)
-                                ? "bg-[#2d2d2d] text-white shadow-xl"
-                                : "bg-white border-2 border-[#2d2d2d]/10 text-[#2d2d2d]"
-                                }`}
+                            onClick={() => toggleVibe(vibe.name)}
+                            style={{
+                                backgroundColor: selectedVibes.includes(vibe.name) ? vibe.color : "white",
+                                color: selectedVibes.includes(vibe.name) ? "white" : "#2d2d2d",
+                                borderColor: selectedVibes.includes(vibe.name) ? vibe.color : "rgba(45,45,45,0.1)",
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = vibe.color;
+                                e.currentTarget.style.color = "white";
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = selectedVibes.includes(vibe.name) ? vibe.color : "white";
+                                e.currentTarget.style.color = selectedVibes.includes(vibe.name) ? "white" : "#2d2d2d";
+                            }}
+                            className="p-4 rounded-2xl font-black text-sm transition-all hover:scale-[1.02] hover:shadow-lg border-2"
                         >
-
-                            {selectedVibes.includes(vibe) && (
+                            {selectedVibes.includes(vibe.name) && (
                                 <Check className="inline w-4 h-4 mr-1" />
                             )}
 
-                            {vibe}
-
+                            {vibe.name}
                         </button>
 
                     ))}
@@ -385,6 +437,35 @@ function RegisterForm() {
                 </div>
 
             </div>
+
+            <div>
+
+                <h2 className="text-2xl font-black text-[#2d2d2d] mb-6">
+                    Price Range Preference
+                </h2>
+
+                <div className="grid grid-cols-4 gap-3">
+
+                    {priceRanges.map((price) => (
+
+                        <button
+                            key={price}
+                            type="button"
+                            onClick={() => togglePrice(price)}
+                            className={`py-4 rounded-2xl font-black transition-all hover:scale-[1.02] ${priceRange.includes(price)
+                                ? "bg-[#FF5733] text-white shadow-xl"
+                                : "bg-white border-2 border-[#2d2d2d]/10 text-[#2d2d2d]"
+                                }`}
+                        >
+                            {price}
+                        </button>
+
+                    ))}
+
+                </div>
+
+            </div>
+
 
 
             {serverError && (

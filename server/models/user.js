@@ -39,8 +39,13 @@ const userSchema = new Schema(
       default: []
     },
 
+    favoriteCities: {
+      type: [String],
+      default: []
+    },
+
     priceRangePreference: {
-      type: String,
+      type: [String],
       enum: ['$', '$$', '$$$', '$$$$'],
       default: '$$'
     },
@@ -56,7 +61,7 @@ const userSchema = new Schema(
 );
 
 // הצפנת סיסמה לפני שמירת משתמש, רק אם שדה הסיסמה נוצר או השתנה
-userSchema.pre('save', async function() {
+userSchema.pre('save', async function () {
   // אם הסיסמה לא שונתה, אין צורך להצפין אותה שוב
   if (!this.isModified('password')) return;
 
@@ -66,7 +71,7 @@ userSchema.pre('save', async function() {
 });
 
 // פונקציה להשוואת סיסמה רגילה מול הסיסמה המוצפנת במסד
-userSchema.methods.comparePassword = async function(candidatePassword) {
+userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 

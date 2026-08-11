@@ -63,7 +63,8 @@ function Profile() {
     const [preferences, setPreferences] = useState({
         favoriteCuisines: [] as string[],
         favoriteVibes: [] as string[],
-        priceRangePreference: "$$",
+        favoriteCities: [] as string[],
+        priceRangePreference: [] as string[],
     });
 
     const [formData, setFormData] = useState({
@@ -87,7 +88,8 @@ function Profile() {
             setPreferences({
                 favoriteCuisines: user.favoriteCuisines || [],
                 favoriteVibes: user.favoriteVibes || [],
-                priceRangePreference: user.priceRangePreference || "$$",
+                favoriteCities: user.favoriteCities || [],
+                priceRangePreference: user.priceRangePreference || [],
             });
 
         }
@@ -139,7 +141,7 @@ function Profile() {
 
             return;
         }
-        
+
         try {
 
             await api.put("/users/change-password", {
@@ -173,7 +175,7 @@ function Profile() {
 
     // שינוי בחירה של מטבח או וייב בזמן עריכה
     const togglePreference = (
-        type: "favoriteCuisines" | "favoriteVibes",
+        type: "favoriteCuisines" | "favoriteVibes" | "favoriteCities",
         value: string
     ) => {
 
@@ -216,55 +218,84 @@ function Profile() {
 
     };
 
+    const priceRanges = ["$", "$$", "$$$", "$$$$"];
+
     const cuisineColors: any = {
         Italian: "#FF5733",
-        Japanese: "#7D1935",
-        French: "#FF6B9D",
-        Mediterranean: "#3AAFA9",
-        American: "#C8E64A",
-        Fusion: "#E8B923",
+        Asian: "#7D1935",
+        Burgers: "#C8E64A",
+        Cocktails: "#E8B923",
+        Cafes: "#FF6B9D",
+        Desserts: "#2C7873",
+        Mexican: "#FF8C42",
+        Vegan: "#3AAFA9",
     };
 
     const vibeColors: any = {
-        Romantic: "#FF6B9D",
-        Family: "#3AAFA9",
-        Trendy: "#7D1935",
-        Outdoor: "#C8E64A",
+        "Date Night": "#FF6B9D",
+        "With Friends": "#FF8C42",
+        "Family Dinner": "#3AAFA9",
         "Hidden Gems": "#E8B923",
-        Rooftop: "#2C7873",
+        "Rooftop Views": "#2C7873",
+        "Trendy Bars": "#7D1935",
+        "Wine & Dine": "#6C5B7B",
+        "Outdoor Seating": "#C8E64A",
     };
 
-    // רשימת המטבחים האפשריים לבחירה בעריכת העדפות
+    const cityColors: any = {
+        "Tel Aviv": "#FF5733",
+        Jerusalem: "#7D1935",
+        Haifa: "#3AAFA9",
+        Eilat: "#E8B923",
+        Herzliya: "#FF6B9D",
+        Netanya: "#2C7873",
+        "Beer Sheva": "#FF8C42",
+        Ashdod: "#C8E64A",
+    };
+
     const cuisineOptions = [
         "Italian",
-        "Japanese",
-        "French",
-        "Mediterranean",
-        "American",
-        "Fusion",
+        "Asian",
+        "Burgers",
+        "Cocktails",
+        "Cafes",
+        "Desserts",
+        "Mexican",
+        "Vegan",
     ];
 
-    // רשימת הוייבים האפשריים לבחירה בעריכת העדפות
     const vibeOptions = [
-        "Romantic",
-        "Family",
-        "Trendy",
-        "Outdoor",
+        "Date Night",
+        "With Friends",
+        "Family Dinner",
         "Hidden Gems",
-        "Rooftop",
+        "Rooftop Views",
+        "Trendy Bars",
+        "Wine & Dine",
+        "Outdoor Seating",
     ];
 
-    // רשימת טווחי המחירים האפשריים לבחירה
-    const priceOptions = [
-        "$",
-        "$$",
-        "$$$",
-        "$$$$",
+    const cityOptions = [
+        "Tel Aviv",
+        "Jerusalem",
+        "Haifa",
+        "Eilat",
+        "Herzliya",
+        "Netanya",
+        "Beer Sheva",
+        "Ashdod",
     ];
-
 
     // בזמן טעינה מציג מסך טעינה
     if (loading) return <LoadingSpinner />;
+
+    const cleanArray = (items?: string[]) =>
+        (items || []).filter((item) => item && item.trim() !== "");
+
+    const cleanFavoriteCuisines = cleanArray(user?.favoriteCuisines);
+    const cleanFavoriteVibes = cleanArray(user?.favoriteVibes);
+    const cleanFavoriteCities = cleanArray(user?.favoriteCities);
+    const cleanPriceRangePreference = cleanArray(user?.priceRangePreference);
 
 
     // במקרה של שגיאה מציג הודעת שגיאה
@@ -625,7 +656,7 @@ function Profile() {
                                     rounded-2xl
                                     border-2 border-[#2d2d2d]/10
                                     hover:border-[#FF5733]
-                                    transition-allד"
+                                    transition-all"
                                 >
                                     Cancel
                                 </button>
@@ -681,9 +712,8 @@ function Profile() {
 
                                     ) : (
 
-                                        user?.favoriteCuisines?.length ? (
-
-                                            user.favoriteCuisines.map((cuisine: string) => (
+                                        cleanFavoriteCuisines.length ? (
+                                            cleanFavoriteCuisines.map((cuisine: string) => (
 
                                                 <span
                                                     key={cuisine}
@@ -720,9 +750,6 @@ function Profile() {
                         </div>
 
 
-
-
-
                         <div>
 
                             <p className="text-sm font-black uppercase text-[#2d2d2d]/50 mb-3">
@@ -751,14 +778,7 @@ function Profile() {
                                                             ? vibeColors[vibe]
                                                             : "#FAFAFA"
                                                 }}
-                                                className="
-                px-5
-                py-2
-                rounded-full
-                font-bold
-                transition-all
-                hover:scale-105
-                "
+                                                className="px-5 py-2 rounded-full font-bold transition-all hover:scale-105"
                                             >
                                                 {vibe}
                                             </button>
@@ -768,24 +788,15 @@ function Profile() {
 
                                     ) : (
 
-                                        user?.favoriteVibes?.length ? (
-
-                                            user.favoriteVibes.map((vibe: string) => (
+                                        cleanFavoriteVibes.length ? (
+                                            cleanFavoriteVibes.map((vibe: string) => (
 
                                                 <span
                                                     key={vibe}
                                                     style={{
                                                         backgroundColor: vibeColors[vibe]
                                                     }}
-                                                    className="
-                    px-5
-                    py-2
-                    rounded-full
-                    text-white
-                    font-bold
-                    hover:scale-105
-                    hover:shadow-lg
-                    transition-all"
+                                                    className="px-5 py-2 rounded-full text-white font-bold hover:scale-105 hover:shadow-lg transition-all"
                                                 >
                                                     {vibe}
                                                 </span>
@@ -807,7 +818,78 @@ function Profile() {
 
                         </div>
 
+                        <div>
 
+                            <p className="text-sm font-black uppercase text-[#2d2d2d]/50 mb-3">
+                                Favorite Cities
+                            </p>
+
+                            <div className="flex flex-wrap gap-3">
+
+                                {
+                                    isEditingPreferences ? (
+
+                                        cityOptions.map((city: string) => (
+
+                                            <button
+                                                key={city}
+                                                onClick={() =>
+                                                    togglePreference(
+                                                        "favoriteCities",
+                                                        city
+                                                    )
+                                                }
+                                                style={{
+                                                    backgroundColor:
+                                                        preferences.favoriteCities.includes(city)
+                                                            ? cityColors[city]
+                                                            : "#FAFAFA"
+                                                }}
+                                                className="
+                        px-5
+                        py-2
+                        rounded-full
+                        font-bold
+                        transition-all
+                        hover:scale-105
+                        "
+                                            >
+                                                {city}
+                                            </button>
+
+                                        ))
+
+                                    ) : (
+
+                                        cleanFavoriteCities.length ? (
+                                            cleanFavoriteCities.map((city: string) => (
+
+                                                <span
+                                                    key={city}
+                                                    style={{
+                                                        backgroundColor: cityColors[city]
+                                                    }}
+                                                    className="px-5 py-2 rounded-full text-white font-bold hover:scale-105 hover:shadow-lg transition-all"
+                                                >
+                                                    {city}
+                                                </span>
+
+                                            ))
+
+                                        ) : (
+
+                                            <p className="text-[#2d2d2d]/50">
+                                                No cities selected yet
+                                            </p>
+
+                                        )
+
+                                    )
+                                }
+
+                            </div>
+
+                        </div>
 
 
 
@@ -822,27 +904,25 @@ function Profile() {
 
                                     <div className="flex gap-3 mt-3">
 
-                                        {priceOptions.map((price) => (
+                                        {priceRanges.map((price) => (
 
                                             <button
                                                 key={price}
                                                 onClick={() =>
                                                     setPreferences({
                                                         ...preferences,
-                                                        priceRangePreference: price
+                                                        priceRangePreference:
+                                                            preferences.priceRangePreference.includes(price)
+                                                                ? preferences.priceRangePreference.filter((item) => item !== price)
+                                                                : [...preferences.priceRangePreference, price]
                                                     })
                                                 }
-                                                className={`px-5
-                                                    py-3
-                                                    rounded-2xl
-                                                    font-black
-                                                    transition-all
-                                                    hover:scale-105
-                                                    ${preferences.priceRangePreference === price
+                                                className={`px-5 py-3 rounded-2xl font-black transition-all hover:scale-105
+                                                    ${preferences.priceRangePreference.includes(price)
                                                         ? "bg-[#FF5733] text-white"
                                                         : "bg-[#FAFAFA] text-[#2d2d2d]"
                                                     }
-                    `}
+`}
                                             >
                                                 {price}
                                             </button>
@@ -853,9 +933,29 @@ function Profile() {
 
                                 ) : (
 
-                                    <p className="text-xl font-bold text-[#2d2d2d]">
-                                        {user?.priceRangePreference}
-                                    </p>
+                                    <div className="flex flex-wrap gap-3 mt-3">
+
+                                        {cleanPriceRangePreference.length ? (
+                                            cleanPriceRangePreference.map((price: string) => (
+
+                                                <span
+                                                    key={price}
+                                                    className="px-5 py-2 rounded-full bg-[#FF5733] text-white font-bold"
+                                                >
+                                                    {price}
+                                                </span>
+
+                                            ))
+
+                                        ) : (
+
+                                            <p className="text-[#2d2d2d]/50">
+                                                No price preference selected yet
+                                            </p>
+
+                                        )}
+
+                                    </div>
 
                                 )
                             }

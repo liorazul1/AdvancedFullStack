@@ -16,7 +16,15 @@ const generateToken = (userId) => {
 // הרשמת משתמש חדש
 exports.register = async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
+    const {
+      username,
+      email,
+      password,
+      favoriteCuisines,
+      favoriteVibes,
+      favoriteCities,
+      priceRangePreference
+    } = req.body;
 
     // בדיקה אם כבר קיים משתמש עם אותו אימייל
     const existingUser = await User.findOne({ email });
@@ -33,7 +41,11 @@ exports.register = async (req, res, next) => {
     const user = await User.create({
       username,
       email,
-      password
+      password,
+      favoriteCuisines,
+      favoriteVibes,
+      favoriteCities,
+      priceRangePreference
     });
 
     // יצירת Token למשתמש החדש

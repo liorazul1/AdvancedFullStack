@@ -20,7 +20,15 @@ const registerSchema = Joi.object({
     .messages({
       'string.min': 'Password must be at least 6 characters',
       'any.required': 'Password is required'
-    })
+    }),
+
+    favoriteCuisines: Joi.array().items(Joi.string()).optional(),
+    favoriteVibes: Joi.array().items(Joi.string()).optional(),
+    favoriteCities: Joi.array().items(Joi.string()).optional(),
+
+  priceRangePreference: Joi.array()
+    .items(Joi.string().valid('$', '$$', '$$$', '$$$$'))
+    .optional()
 });
 
 // סכמת ולידציה להתחברות משתמש קיים
