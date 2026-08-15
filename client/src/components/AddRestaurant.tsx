@@ -13,6 +13,38 @@ interface AddRestaurantProps {
     onClose: () => void;
 }
 
+const cuisineOptions = [
+    "Italian",
+    "Asian",
+    "Burgers",
+    "Cocktails",
+    "Cafes",
+    "Desserts",
+    "Mexican",
+    "Vegan",
+];
+
+const locationOptions = [
+    "Tel Aviv",
+    "Jerusalem",
+    "Haifa",
+    "Eilat",
+    "Herzliya",
+    "Netanya",
+    "Beer Sheva",
+    "Ashdod",
+];
+
+const vibeOptions = [
+    { name: "Date Night", color: "#FF6B9D" },
+    { name: "With Friends", color: "#FF8C42" },
+    { name: "Family Dinner", color: "#3AAFA9" },
+    { name: "Hidden Gems", color: "#E8B923" },
+    { name: "Rooftop Views", color: "#2C7873" },
+    { name: "Trendy Bars", color: "#7D1935" },
+    { name: "Wine & Dine", color: "#6C5B7B" },
+    { name: "Outdoor Seating", color: "#C8E64A" },
+];
 
 const AddRestaurant = ({ onClose }: AddRestaurantProps) => {
 
@@ -26,9 +58,9 @@ const AddRestaurant = ({ onClose }: AddRestaurantProps) => {
         description: "",
         cuisine: "",
         city: "",
+        vibes: [] as string[],
         priceRange: "$$",
     });
-
 
     // שמירת קובץ התמונה שנבחר
     const [image, setImage] = useState<File | null>(null);
@@ -49,7 +81,14 @@ const AddRestaurant = ({ onClose }: AddRestaurantProps) => {
 
     };
 
-
+    const toggleVibe = (vibe: string) => {
+        setFormData((prev) => ({
+            ...prev,
+            vibes: prev.vibes.includes(vibe)
+                ? prev.vibes.filter((item) => item !== vibe)
+                : [...prev.vibes, vibe],
+        }));
+    };
 
     // שליחת הטופס ויצירת מסעדה חדשה
     const handleSubmit = async (
@@ -66,8 +105,14 @@ const AddRestaurant = ({ onClose }: AddRestaurantProps) => {
         // הוספת נתוני המסעדה ל-FormData
         Object.entries(formData).forEach(([key, value]) => {
 
-            data.append(key, value);
+            if (key !== "vibes") {
+                data.append(key, value as string);
+            }
 
+        });
+
+        formData.vibes.forEach((vibe) => {
+            data.append("vibes", vibe);
         });
 
 
@@ -160,24 +205,43 @@ const AddRestaurant = ({ onClose }: AddRestaurantProps) => {
 
 
 
-                <input
+                <select
                     name="city"
-                    placeholder="City"
                     value={formData.city}
                     onChange={handleChange}
+                    required
                     className="p-4 rounded-2xl bg-[#FAFAFA] border border-[#2d2d2d]/5 focus:outline-none focus:border-[#FF5733]"
-                />
+                >
+                    <option value="" disabled>
+                        Select city
+                    </option>
+
+                    {locationOptions.map((location) => (
+                        <option key={location} value={location}>
+                            {location}
+                        </option>
+                    ))}
+                </select>
 
 
 
-                <input
+                <select
                     name="cuisine"
-                    placeholder="Cuisine"
                     value={formData.cuisine}
                     onChange={handleChange}
+                    required
                     className="p-4 rounded-2xl bg-[#FAFAFA] border border-[#2d2d2d]/5 focus:outline-none focus:border-[#FF5733]"
-                />
+                >
+                    <option value="" disabled>
+                        Select cuisine
+                    </option>
 
+                    {cuisineOptions.map((cuisine) => (
+                        <option key={cuisine} value={cuisine}>
+                            {cuisine}
+                        </option>
+                    ))}
+                </select>
 
 
                 <select
@@ -194,7 +258,36 @@ const AddRestaurant = ({ onClose }: AddRestaurantProps) => {
 
                 </select>
 
+                <div className="md:col-span-2">
+                    <p className="font-black text-[#2d2d2d] mb-3">
+                        Restaurant vibes
+                    </p>
 
+                    <div className="flex flex-wrap gap-3">
+                        {vibeOptions.map((vibe) => {
+                            const isSelected = formData.vibes.includes(vibe.name);
+
+                            return (
+                                <button
+                                    type="button"
+                                    key={vibe.name}
+                                    onClick={() => toggleVibe(vibe.name)}
+                                    className={`px-5 py-3 rounded-full font-black text-sm transition-all hover:scale-[1.03] ${isSelected
+                                            ? "text-white shadow-lg"
+                                            : "bg-[#FAFAFA] text-[#2d2d2d] border border-[#2d2d2d]/5"
+                                        }`}
+                                    style={
+                                        isSelected
+                                            ? { backgroundColor: vibe.color }
+                                            : {}
+                                    }
+                                >
+                                    {vibe.name}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
 
 
                 <textarea
