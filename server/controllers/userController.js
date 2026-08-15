@@ -199,3 +199,46 @@ exports.changePassword = async (req, res, next) => {
 
   }
 };
+
+// שמירת מסעדה במועדפים של המשתמש המחובר
+exports.saveRestaurant = async (req, res, next) => {
+  try {
+    const { restaurantId } = req.params;
+
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { $addToSet: { savedRestaurants: restaurantId } },
+      { new: true }
+    ).populate('savedRestaurants');
+
+    res.status(200).json({
+      success: true,
+      data: user
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+// הסרת מסעדה מהמועדפים של המשתמש המחובר
+exports.removeSavedRestaurant = async (req, res, next) => {
+  try {
+    const { restaurantId } = req.params;
+
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { $pull: { savedRestaurants: restaurantId } },
+      { new: true }
+    ).populate('savedRestaurants');
+
+    res.status(200).json({
+      success: true,
+      data: user
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};

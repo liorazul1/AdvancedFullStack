@@ -1,6 +1,8 @@
 import { MapPin, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+import SaveRestaurantButton from "./SaveRestaurantButton";
+
 const cuisineColors: Record<string, string> = {
     Italian: "#FF5733",
     Asian: "#7D1935",
@@ -51,6 +53,11 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
                 >
                     {restaurant.cuisine}
                 </span>
+
+                <SaveRestaurantButton
+                    restaurantId={restaurant._id}
+                    className="absolute top-5 right-5"
+                />
             </div>
 
             <div className="p-6">

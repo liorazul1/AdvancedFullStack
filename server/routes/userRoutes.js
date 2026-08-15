@@ -10,7 +10,9 @@ const {
   deleteUser,
   getProfile,
   updateProfile,
-  changePassword
+  changePassword,
+  saveRestaurant,
+  removeSavedRestaurant
 } = require('../controllers/userController');
 
 const validate = require('../middleware/validate');
@@ -42,16 +44,24 @@ router.put('/profile', protect, updateProfile);
 // שינוי סיסמה למשתמש המחובר - Update
 router.put('/change-password', protect, changePassword);
 
+// שמירת מסעדה במועדפים של המשתמש - Update
+router.put(
+  '/save-restaurant/:restaurantId',
+  protect,
+  saveRestaurant
+);
+// הסרת מסעדה מהמועדפים של המשתמש - Delete / Update
+router.delete(
+  '/save-restaurant/:restaurantId',
+  protect,
+  removeSavedRestaurant
+);
+
 // עדכון משתמש לפי מזהה - Update
 router.put('/:id', updateUser);
 
 // מחיקת משתמש לפי מזהה - Delete
 router.delete('/:id', deleteUser);
 
-// Future routes:
-// GET /api/users/profile
-// PUT /api/users/preferences
-// POST /api/users/save-restaurant
-// DELETE /api/users/save-restaurant/:id
 
 module.exports = router;

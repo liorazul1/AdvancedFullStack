@@ -1,9 +1,11 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { MapPin, Star, Bookmark, Heart, Share2 } from "lucide-react";
+import { MapPin, Star } from "lucide-react";
 
 import { useFetch } from "../hooks/useFetch";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ErrorMessage from "../components/ErrorMessage";
+
+import SaveRestaurantButton from "../components/SaveRestaurantButton";
 
 
 const cuisineColors: Record<string, string> = {
@@ -76,27 +78,9 @@ function RestaurantDetails() {
                 <div className="absolute top-8 right-12 flex gap-3">
 
 
-                    <button
-                        className="p-4 bg-white/90 rounded-full shadow-lg hover:scale-105 transition-all"
-                    >
-                        <Share2 className="w-5 h-5 text-[#2d2d2d]" />
-                    </button>
-
-
-
-                    <button
-                        className="p-4 bg-white/90 rounded-full shadow-lg hover:scale-105 transition-all"
-                    >
-                        <Heart className="w-5 h-5 text-[#2d2d2d]" />
-                    </button>
-
-
-
-                    <button
-                        className="p-4 bg-white/90 rounded-full shadow-lg hover:scale-105 transition-all"
-                    >
-                        <Bookmark className="w-5 h-5 text-[#2d2d2d]" />
-                    </button>
+                    <SaveRestaurantButton
+                        restaurantId={restaurant._id}
+                    />
 
 
                 </div>

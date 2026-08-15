@@ -964,10 +964,75 @@ function Profile() {
 
 
                     </div>
-
-
                 </section>
 
+                {/* מסעדות שמורות */}
+                <section className="bg-white rounded-3xl shadow-xl border border-[#2d2d2d]/5 p-10 mt-8">
+
+                    <h2 className="text-2xl font-black text-[#2d2d2d] mb-8">
+                        Saved Restaurants
+                    </h2>
+
+                    <div className="space-y-6">
+
+                        {user?.savedRestaurants?.length ? (
+
+                            user.savedRestaurants.map((restaurant: any) => (
+
+                                <div
+                                    key={restaurant._id}
+                                    onClick={() =>
+                                        navigate(`/restaurants/${restaurant._id}`)
+                                    }
+                                    className="bg-[#FAFAFA]
+                    rounded-2xl
+                    p-6
+                    cursor-pointer
+                    hover:shadow-lg
+                    hover:scale-[1.01]
+                    transition-all"
+                                >
+
+                                    <div className="flex justify-between items-center mb-4">
+
+                                        <div>
+
+                                            <h3 className="text-xl font-black text-[#2d2d2d]">
+                                                {restaurant.name}
+                                            </h3>
+
+                                            <p className="text-[#2d2d2d]/50 font-medium">
+                                                {restaurant.city} • {restaurant.cuisine}
+                                            </p>
+
+                                        </div>
+
+                                        <div className="text-[#FF5733] font-black">
+                                            {restaurant.priceRange}
+                                        </div>
+
+                                    </div>
+
+                                    <p className="text-[#2d2d2d]/60 font-medium line-clamp-2">
+                                        {restaurant.description || "No description available."}
+                                    </p>
+
+                                </div>
+
+                            ))
+
+                        ) : (
+
+                            <p className="text-[#2d2d2d]/50">
+                                No saved restaurants yet
+                            </p>
+
+                        )}
+
+                    </div>
+
+                </section>
+                
                 {/* ביקורות שהמשתמש כתב */}
                 <section className="bg-white rounded-3xl shadow-xl border border-[#2d2d2d]/5 p-10 mt-8">
 

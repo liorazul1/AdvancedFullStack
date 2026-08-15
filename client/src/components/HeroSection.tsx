@@ -40,10 +40,17 @@ const HeroSection = () => {
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             placeholder="Search by name, cuisine, location..."
-                            className="w-full pl-20 pr-8 py-7 bg-[#FAFAFA] rounded-3xl border-2 border-[#2d2d2d]/5 focus:border-[#2d2d2d]/20 focus:outline-none focus:bg-white transition-all text-[#2d2d2d] placeholder-[#2d2d2d]/30 text-xl font-medium shadow-sm"
+                            className="w-full pl-20 pr-36 py-7 bg-[#FAFAFA] rounded-3xl border-2 border-[#2d2d2d]/5 focus:border-[#2d2d2d]/20 focus:outline-none focus:bg-white transition-all text-[#2d2d2d] placeholder-[#2d2d2d]/30 text-xl font-medium shadow-sm"
                         />
+                        <button
+                            type="submit"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 px-7 py-4 bg-[#FF5733] text-white font-black rounded-2xl hover:bg-[#FF5733]/90 hover:scale-[1.02] transition-all"
+                        >
+                            Search
+                        </button>
                     </div>
                 </form>
+
 
                 <div className="flex items-center justify-center gap-5">
                     <button
