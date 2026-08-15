@@ -34,6 +34,7 @@ function Home() {
   const [profileLoading, setProfileLoading] = useState(false);
   const { user, loading: authLoading } = useAuth();
 
+
   useEffect(() => {
     dispatch(fetchRestaurants());
   }, [dispatch]);
@@ -67,6 +68,11 @@ function Home() {
       userPreferences.priceRangePreference?.includes(restaurant.priceRange)
     );
   });
+
+  const savedRestaurantIds =
+    userPreferences?.savedRestaurants?.map((restaurant: any) =>
+      restaurant._id || restaurant
+    ) || [];
 
   return (
     <>
@@ -110,6 +116,7 @@ function Home() {
                 <RestaurantCard
                   key={restaurant._id}
                   restaurant={restaurant}
+                  isSaved={savedRestaurantIds.includes(restaurant._id)}
                 />
               ))}
             </div>

@@ -16,9 +16,14 @@ const cuisineColors: Record<string, string> = {
 
 type RestaurantCardProps = {
     restaurant: any;
-};
+    isSaved?: boolean;
+}
 
-const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
+const RestaurantCard = ({
+    restaurant,
+    isSaved = false,
+}: RestaurantCardProps) => {
+
     const navigate = useNavigate();
 
     const accentColor =
@@ -55,6 +60,7 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
 
                 <SaveRestaurantButton
                     restaurantId={restaurant._id}
+                    initialSaved={isSaved}
                     className="absolute top-5 right-5"
                 />
             </div>

@@ -7,39 +7,23 @@ import { useAuth } from "../context/AuthContext";
 
 type SaveRestaurantButtonProps = {
     restaurantId: string;
+    initialSaved?: boolean;
     className?: string;
 };
 
 const SaveRestaurantButton = ({
     restaurantId,
+    initialSaved = false,
     className = "",
 }: SaveRestaurantButtonProps) => {
     const navigate = useNavigate();
     const { user } = useAuth();
 
-    const [isSaved, setIsSaved] = useState(false);
+    const [isSaved, setIsSaved] = useState(initialSaved);
 
     useEffect(() => {
-        if (!user) {
-            setIsSaved(false);
-            return;
-        }
-
-        api
-            .get("/users/profile")
-            .then((res) => {
-                const savedRestaurants = res.data.data.savedRestaurants || [];
-
-                const isRestaurantSaved = savedRestaurants.some(
-                    (restaurant: any) => restaurant._id === restaurantId
-                );
-
-                setIsSaved(isRestaurantSaved);
-            })
-            .catch(() => {
-                setIsSaved(false);
-            });
-    }, [user, restaurantId]);
+        setIsSaved(initialSaved);
+    }, [initialSaved]);
 
     const handleSaveClick = async (
         e: React.MouseEvent<HTMLButtonElement>

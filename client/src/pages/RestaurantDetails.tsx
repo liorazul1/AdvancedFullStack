@@ -1,12 +1,13 @@
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { MapPin, Star } from "lucide-react";
 
+import api from "../services/api";
+import { useAuth } from "../context/AuthContext";
 import { useFetch } from "../hooks/useFetch";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ErrorMessage from "../components/ErrorMessage";
-
 import SaveRestaurantButton from "../components/SaveRestaurantButton";
-
 
 const cuisineColors: Record<string, string> = {
     Italian: "#FF5733",
@@ -25,6 +26,9 @@ function RestaurantDetails() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
 
+    const { user } = useAuth();
+    const [isSaved, setIsSaved] = useState(false);
+
 
     const {
         data: restaurant,
@@ -37,7 +41,28 @@ function RestaurantDetails() {
         data: reviews
     } = useFetch(`/reviews/restaurant/${id}`);
 
+    useEffect(() => {
+        if (!user || !id) {
+            setIsSaved(false);
+            return;
+        }
 
+        api
+            .get("/users/profile")
+            .then((res) => {
+                const savedRestaurants = res.data.data.savedRestaurants || [];
+
+                const isRestaurantSaved = savedRestaurants.some(
+                    (restaurant: any) =>
+                        restaurant._id === id || restaurant === id
+                );
+
+                setIsSaved(isRestaurantSaved);
+            })
+            .catch(() => {
+                setIsSaved(false);
+            });
+    }, [user, id]);
 
     if (loading) return <LoadingSpinner />;
 
@@ -78,6 +103,7 @@ function RestaurantDetails() {
 
                     <SaveRestaurantButton
                         restaurantId={restaurant._id}
+                        initialSaved={isSaved}
                     />
 
 

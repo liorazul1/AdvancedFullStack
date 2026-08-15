@@ -11,6 +11,9 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import ErrorMessage from "../components/ErrorMessage";
 import AddRestaurant from "../components/AddRestaurant";
 
+import api from "../services/api";
+import { useAuth } from "../context/AuthContext"
+
 
 const priceRanges = ["$", "$$", "$$$", "$$$$"];
 
@@ -59,6 +62,9 @@ function ExplorePage() {
 
   const dispatch = useDispatch<AppDispatch>();
 
+  const { user } = useAuth();
+  const [savedRestaurantIds, setSavedRestaurantIds] = useState<string[]>([]);
+
   const {
     restaurants,
     loading,
@@ -69,6 +75,29 @@ function ExplorePage() {
   useEffect(() => {
     dispatch(fetchRestaurants());
   }, [dispatch]);
+
+
+  useEffect(() => {
+    if (!user) {
+      setSavedRestaurantIds([]);
+      return;
+    }
+
+    api
+      .get("/users/profile")
+      .then((res) => {
+        const savedRestaurants = res.data.data.savedRestaurants || [];
+
+        const ids = savedRestaurants.map((restaurant: any) =>
+          restaurant._id || restaurant
+        );
+
+        setSavedRestaurantIds(ids);
+      })
+      .catch(() => {
+        setSavedRestaurantIds([]);
+      });
+  }, [user]);
 
 
   const [search, setSearch] = useState(searchFromUrl);
@@ -359,6 +388,7 @@ function ExplorePage() {
                   <RestaurantCard
                     key={restaurant._id}
                     restaurant={restaurant}
+                    isSaved={savedRestaurantIds.includes(restaurant._id)}
                   />
 
                 ))}
