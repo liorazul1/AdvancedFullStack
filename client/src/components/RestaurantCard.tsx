@@ -6,13 +6,12 @@ import SaveRestaurantButton from "./SaveRestaurantButton";
 const cuisineColors: Record<string, string> = {
     Italian: "#FF5733",
     Asian: "#7D1935",
-    Japanese: "#7D1935",
-    French: "#FF6B9D",
-    Contemporary: "#FF5733",
-    Mediterranean: "#3AAFA9",
-    American: "#C8E64A",
-    Fusion: "#E8B923",
-    International: "#2C7873",
+    Burgers: "#C8E64A",
+    Cocktails: "#E8B923",
+    Cafes: "#FF6B9D",
+    Desserts: "#2C7873",
+    Mexican: "#FF8C42",
+    Vegan: "#3AAFA9",
 };
 
 type RestaurantCardProps = {
