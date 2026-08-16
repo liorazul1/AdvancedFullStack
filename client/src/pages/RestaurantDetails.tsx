@@ -9,6 +9,9 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import ErrorMessage from "../components/ErrorMessage";
 import SaveRestaurantButton from "../components/SaveRestaurantButton";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const SERVER_URL = API_URL.replace("/api", "");
+
 const cuisineColors: Record<string, string> = {
     Italian: "#FF5733",
     Asian: "#7D1935",
@@ -76,7 +79,7 @@ function RestaurantDetails() {
         cuisineColors[restaurant.cuisine] || "#FF5733";
 
     const imageUrl = restaurant.image
-        ? `http://localhost:5000${restaurant.image}`
+        ? `${SERVER_URL}${restaurant.image}`
         : "https://placehold.co/1080x500?text=Restaurant";
 
     return (

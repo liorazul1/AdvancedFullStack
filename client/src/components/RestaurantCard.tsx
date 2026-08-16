@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 import SaveRestaurantButton from "./SaveRestaurantButton";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const SERVER_URL = API_URL.replace("/api", "");
+
 const cuisineColors: Record<string, string> = {
     Italian: "#FF5733",
     Asian: "#7D1935",
@@ -44,7 +47,7 @@ const RestaurantCard = ({
                 <img
                     src={
                         restaurant.image
-                            ? `http://localhost:5000${restaurant.image}`
+                            ? `${SERVER_URL}${restaurant.image}`
                             : undefined
                     }
                     alt={restaurant.name}
