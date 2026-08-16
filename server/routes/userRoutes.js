@@ -30,13 +30,13 @@ router.post(
 );
 
 // שליפת כל המשתמשים - Read
-router.get('/', getAllUsers);
+router.get('/', protect, getAllUsers);
 
 // שליפת פרופיל המשתמש המחובר - Read
 router.get('/profile', protect, getProfile);
 
 // שליפת משתמש לפי מזהה - Read
-router.get('/:id', getUserById);
+router.get('/:id', protect, getUserById);
 
 // עדכון פרופיל המשתמש המחובר - Update
 router.put('/profile', protect, updateProfile);
@@ -58,10 +58,10 @@ router.delete(
 );
 
 // עדכון משתמש לפי מזהה - Update
-router.put('/:id', updateUser);
+router.put('/:id', protect, updateUser);
 
 // מחיקת משתמש לפי מזהה - Delete
-router.delete('/:id', deleteUser);
+router.delete('/:id', protect, deleteUser);
 
 
 module.exports = router;
