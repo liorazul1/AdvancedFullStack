@@ -8,7 +8,8 @@ const router = express.Router();
 const {
   register,
   login,
-  getMe
+  getMe,
+  googleLogin
 } = require('../controllers/authController');
 
 // מייבא את Middleware ההגנה שבודק JWT
@@ -22,6 +23,9 @@ router.post('/register', validate(registerSchema), register);
 
 // התחברות משתמש קיים
 router.post('/login', validate(loginSchema), login);
+
+// התחברות באמצעות Google - Create/Login
+router.post('/google', googleLogin);
 
 // שליפת המשתמש המחובר - דורש Token תקין
 router.get('/me', protect, getMe);

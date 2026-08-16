@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import api from '../services/api';
 import { Link, useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
 import { useAuth } from "../context/AuthContext";
 
 // מגדיר אילו שגיאות יכולות להיות בטופס
@@ -25,6 +26,21 @@ function LoginForm() {
     const navigate = useNavigate();
 
     const { login } = useAuth();
+
+    // פונקציה שמופעלת לאחר התחברות מוצלחת דרך Google
+    const handleGoogleSuccess = async (credentialResponse: any) => {
+        try {
+            const { data } = await api.post("/auth/google", {
+                credential: credentialResponse.credential,
+            });
+
+            login(data.user, data.token);
+
+            navigate("/explore");
+        } catch (err: any) {
+            setServerError(err.response?.data?.message || "Google login failed");
+        }
+    };
 
     // פונקציה שבודקת האם הנתונים שהוזנו תקינים
     const validate = () => {
@@ -142,6 +158,25 @@ function LoginForm() {
             >
                 Log In
             </button>
+
+            {/* הפרדה בין התחברות רגילה להתחברות באמצעות Google */}
+            <div className="flex items-center gap-4">
+                <div className="h-px bg-[#2d2d2d]/10 flex-1" />
+
+                <span className="text-sm font-bold text-[#2d2d2d]/40">
+                    or
+                </span>
+
+                <div className="h-px bg-[#2d2d2d]/10 flex-1" />
+            </div>
+
+            {/* כפתור ההתחברות הרשמי של Google */}
+            <div className="flex justify-center">
+                <GoogleLogin
+                    onSuccess={handleGoogleSuccess}
+                    onError={() => setServerError("Google login failed")}
+                />
+            </div>
 
             <div className="text-center">
                 <p className="text-[#2d2d2d]/50 font-medium">

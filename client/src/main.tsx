@@ -10,6 +10,9 @@ import { BrowserRouter } from 'react-router-dom';
 // מייבא את Provider כדי לחבר את Redux לכל האפליקציה
 import { Provider } from 'react-redux';
 
+// מייבא את GoogleOAuthProvider כדי לאפשר התחברות באמצעות Google 
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
 // מייבא את ה-Store המרכזי של Redux
 import { store } from './store/store';
 
@@ -24,12 +27,14 @@ import './index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
-      </Provider>
-    </BrowserRouter>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <BrowserRouter>
+        <Provider store={store}>
+          <AuthProvider>
+            <App />
+          </AuthProvider>
+        </Provider>
+      </BrowserRouter>
+    </GoogleOAuthProvider>
   </StrictMode>,
 );

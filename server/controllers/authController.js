@@ -4,6 +4,10 @@ const User = require('../models/user');
 // מייבא את JWT לצורך יצירת Token למשתמש מחובר
 const jwt = require('jsonwebtoken');
 
+const { OAuth2Client } = require('google-auth-library');
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 // פונקציה פנימית ליצירת Token לפי מזהה המשתמש
 const generateToken = (userId) => {
   return jwt.sign(
@@ -120,6 +124,62 @@ exports.getMe = async (req, res, next) => {
       data: user
     });
 
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.googleLogin = async (req, res, next) => {
+  try {
+    const { credential } = req.body;
+
+    if (!credential) {
+      return res.status(400).json({
+        success: false,
+        message: 'Google credential is required'
+      });
+    }
+
+    const ticket = await googleClient.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID
+    });
+
+    const payload = ticket.getPayload();
+
+    if (!payload || !payload.email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Google account email is required'
+      });
+    }
+
+    let user = await User.findOne({ email: payload.email });
+
+    if (!user) {
+      user = await User.create({
+        username: payload.name || payload.email.split('@')[0],
+        email: payload.email,
+        password: `google-${payload.sub}`
+      });
+    }
+
+    const token = generateToken(user._id);
+
+    res.status(200).json({
+      success: true,
+      token,
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        favoriteCuisines: user.favoriteCuisines,
+        favoriteVibes: user.favoriteVibes,
+        favoriteCities: user.favoriteCities,
+        priceRangePreference: user.priceRangePreference,
+        savedRestaurants: user.savedRestaurants
+      }
+    });
   } catch (error) {
     next(error);
   }

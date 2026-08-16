@@ -100,7 +100,6 @@ function RestaurantDetails() {
 
                 <div className="absolute top-8 right-12 flex gap-3">
 
-
                     <SaveRestaurantButton
                         restaurantId={restaurant._id}
                         initialSaved={isSaved}
@@ -108,7 +107,6 @@ function RestaurantDetails() {
 
 
                 </div>
-
 
             </div>
 
