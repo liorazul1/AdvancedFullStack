@@ -3,7 +3,7 @@ import axios from 'axios';
 // יצירת מופע Axios מרכזי לכל קריאות ה-API מול השרת
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
-  timeout: 10000,
+  timeout: 60000,
 });
 
 // הוספת JWT Token לכל בקשה יוצאת, אם קיים Token ב-localStorage
