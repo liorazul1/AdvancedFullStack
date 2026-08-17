@@ -81,10 +81,11 @@
     "vary": "^1.1.2",
     "wrappy": "^1.0.2"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
+"scripts": {
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "start": "node server.js",
+  "seed": "node seed.js"
+},
   "keywords": [],
   "author": "",
   "license": "ISC"
