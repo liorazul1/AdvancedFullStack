@@ -379,7 +379,7 @@ function ExplorePage() {
 
             {filteredRestaurants?.length ? (
 
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 min-[1300px]:grid-cols-2 min-[1700px]:grid-cols-3 gap-6 md:gap-8">
 
                 {filteredRestaurants.map((restaurant: any) => (
 

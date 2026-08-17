@@ -3,7 +3,7 @@ const rateLimit = require('express-rate-limit');
 // הגבלת בקשות כללית לכל ה-API
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // חלון זמן של 15 דקות
-  max: 100, // מקסימום 100 בקשות מכל כתובת IP בפרק הזמן שהוגדר
+  max: 500, // מקסימום 100 בקשות מכל כתובת IP בפרק הזמן שהוגדר
   standardHeaders: true, // מחזיר מידע על מגבלת הבקשות ב-Headers המודרניים
   legacyHeaders: false, // מבטל שימוש ב-Headers הישנים של Rate Limit
   message: {
