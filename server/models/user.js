@@ -47,9 +47,9 @@ const userSchema = new Schema(
     priceRangePreference: {
       type: [String],
       enum: ['$', '$$', '$$$', '$$$$'],
-      default: '$$'
+      default: ['$$']
     },
-
+    
     savedRestaurants: [{
       type: Schema.Types.ObjectId,
       ref: 'Restaurant'
