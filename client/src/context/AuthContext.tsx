@@ -12,6 +12,7 @@ type AuthContextType = {
   loading: boolean;
   login: (userData: User, token: string) => void;
   logout: () => void;
+  updateUser: (userData: User) => void;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -45,6 +46,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setUser(userData);
   };
 
+  // מעדכן את פרטי המשתמש המחובר אחרי שינוי פרופיל
+  const updateUser = (userData: User) => {
+    setUser(userData);
+  };
+
   // מוחק את ה-Token ומאפס את המשתמש המחובר
   const logout = () => {
     localStorage.removeItem('token');
@@ -52,7 +58,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

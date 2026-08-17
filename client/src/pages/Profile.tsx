@@ -3,6 +3,7 @@ import { useFetch } from "../hooks/useFetch";
 import { useEffect } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 // מייבא Hooks לעבודה מול Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +18,8 @@ import ErrorMessage from "../components/ErrorMessage";
 
 
 function Profile() {
+
+    const { updateUser } = useAuth();
 
     // שליפת פרטי המשתמש המחובר
     const {
@@ -107,7 +110,9 @@ function Profile() {
 
         try {
 
-            await api.put("/users/profile", formData);
+            const res = await api.put("/users/profile", formData);
+
+            updateUser(res.data.data);
 
             await refetch();
 
@@ -612,7 +617,7 @@ function Profile() {
                     {
                         isEditingPreferences && (
 
-                           <div className="flex flex-col sm:flex-row gap-4 mb-8 md:mb-12">
+                            <div className="flex flex-col sm:flex-row gap-4 mb-8 md:mb-12">
 
                                 <button
                                     onClick={handleSavePreferences}
