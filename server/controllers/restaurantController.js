@@ -65,9 +65,18 @@ exports.getRestaurantById = async (req, res, next) => {
 // עדכון מסעדה לפי ID
 exports.updateRestaurant = async (req, res, next) => {
   try {
+    const updateData = {
+      ...req.body
+    };
+
+    // אם הועלתה תמונה חדשה, מעדכנים את נתיב התמונה במסעדה
+    if (req.file) {
+      updateData.image = `/uploads/${req.file.filename}`;
+    }
+
     const restaurant = await Restaurant.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      updateData,
       {
         new: true,
         runValidators: true

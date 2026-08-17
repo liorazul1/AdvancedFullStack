@@ -1,4 +1,4 @@
-import { LogOut, User } from "lucide-react";
+import { LogOut, User, UserPlus } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -13,15 +13,15 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white/98 backdrop-blur-2xl border-b border-[#2d2d2d]/5 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex items-center justify-between h-20">
+      <div className="max-w-7xl mx-auto px-2 sm:px-3 md:px-6">
+        <div className="flex items-center justify-between h-auto min-h-20 py-4 gap-4">
 
-          <div className="flex items-center gap-16">
+          <div className="flex items-center gap-6 md:gap-16">
             <Link
               to="/"
               className="flex items-center hover:opacity-80 transition-opacity"
             >
-              <span className="text-[32px] font-black tracking-[-0.03em]">
+              <span className="text-2xl md:text-[32px] font-black tracking-tight">
                 <span className="text-[#2d2d2d]">Tasty</span>
                 <span className="text-[#FF5733]">Match</span>
               </span>
@@ -51,10 +51,12 @@ const Navbar = () => {
 
                 <button
                   onClick={logout}
-                  className="flex items-center gap-2 px-6 py-3 rounded-full text-base font-black text-[#2d2d2d] hover:bg-[#FAFAFA] transition-colors"
+                  className="flex items-center gap-2 px-3 md:px-6 py-3 rounded-full text-base font-black text-[#2d2d2d] hover:bg-[#FAFAFA] transition-colors"
                 >
                   <LogOut className="w-4 h-4" />
-                  Logout
+                  <span className="hidden md:inline">
+                    Logout
+                  </span>
                 </button>
               </>
             ) : (
@@ -68,9 +70,13 @@ const Navbar = () => {
 
                 <Link
                   to="/register"
-                  className="px-6 py-3 rounded-full bg-[#2d2d2d] text-white text-base font-black hover:bg-[#2d2d2d]/90 hover:scale-[1.02] transition-all shadow-lg"
+                  className="w-10 h-10 sm:w-auto sm:h-auto sm:px-4 md:px-6 sm:py-3 rounded-full bg-[#2d2d2d] text-white text-sm md:text-base font-black hover:bg-[#2d2d2d]/90 hover:scale-[1.02] transition-all shadow-lg whitespace-nowrap flex items-center justify-center shrink-0"
                 >
-                  Sign Up
+                  <UserPlus className="w-4 h-4 sm:hidden" />
+
+                  <span className="hidden sm:inline">
+                    Sign Up
+                  </span>
                 </Link>
               </>
             )}

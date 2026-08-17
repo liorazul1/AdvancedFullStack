@@ -46,10 +46,13 @@ function Home() {
       return;
     }
 
+    setProfileLoading(true);
+
     api
       .get('/users/profile')
       .then((res) => setUserPreferences(res.data.data))
-      .catch(() => setUserPreferences(null));
+      .catch(() => setUserPreferences(null))
+      .finally(() => setProfileLoading(false));
   }, [user]);
 
   if (loading || authLoading) return <LoadingSpinner />;
@@ -63,7 +66,9 @@ function Home() {
 
     return (
       userPreferences.favoriteCuisines?.includes(restaurant.cuisine) ||
-      userPreferences.favoriteVibes?.includes(restaurant.vibe) ||
+      restaurant.vibes?.some((vibe: string) =>
+        userPreferences.favoriteVibes?.includes(vibe)
+      ) ||
       userPreferences.favoriteCities?.includes(restaurant.city) ||
       userPreferences.priceRangePreference?.includes(restaurant.priceRange)
     );

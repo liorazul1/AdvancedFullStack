@@ -15,19 +15,19 @@ const VibeSection = () => {
     const navigate = useNavigate();
 
     return (
-        <section className="py-24 px-12 bg-[#FAFAFA]">
+        <section className="py-16 md:py-24 px-5 md:px-12 bg-[#FAFAFA]">
             <div className="max-w-[1400px] mx-auto">
-                <div className="mb-16">
-                    <h2 className="text-6xl font-black text-[#2d2d2d] mb-3 tracking-tight">
+                <div className="mb-10 md:mb-16">
+                    <h2 className="text-4xl md:text-6xl font-black text-[#2d2d2d] mb-3 tracking-tight">
                         Browse by Vibe
                     </h2>
 
-                    <p className="text-xl text-[#2d2d2d]/50 font-medium">
+                    <p className="text-base md:text-xl text-[#2d2d2d]/50 font-medium">
                         Perfect places for every occasion
                     </p>
                 </div>
 
-                <div className="grid grid-cols-4 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                     {vibes.map((vibe) => (
                         <button
                             type="button"
@@ -35,7 +35,7 @@ const VibeSection = () => {
                             onClick={() =>
                                 navigate(`/explore?vibe=${encodeURIComponent(vibe.name)}`)
                             }
-                            className="group p-8 bg-white rounded-3xl hover:scale-[1.02] transition-all duration-300 shadow-lg hover:shadow-2xl text-left border-l-8"
+                            className="group p-6 md:p-8 bg-white rounded-3xl hover:scale-[1.02] transition-all duration-300 shadow-lg hover:shadow-2xl text-left border-l-8"
                             style={{ borderColor: vibe.color }}
                         >
                             <div className="mb-3">
@@ -47,7 +47,7 @@ const VibeSection = () => {
                                 </span>
                             </div>
 
-                            <h3 className="text-3xl font-black text-[#2d2d2d] tracking-tight">
+                           <h3 className="text-2xl md:text-3xl font-black text-[#2d2d2d] tracking-tight">
                                 {vibe.name}
                             </h3>
                         </button>

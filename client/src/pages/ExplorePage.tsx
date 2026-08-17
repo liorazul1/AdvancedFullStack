@@ -199,17 +199,17 @@ function ExplorePage() {
 
     <div className="min-h-screen bg-white">
 
-      <div className="max-w-[1400px] mx-auto px-12 py-24">
+      <div className="max-w-[1400px] mx-auto px-5 md:px-12 py-16 md:py-24">
 
 
-        <div className="mb-12 flex justify-between items-center">
+        <div className="mb-10 md:mb-12 flex flex-col md:flex-row md:justify-between md:items-center gap-6">
 
           <div>
-            <h1 className="text-6xl font-black text-[#2d2d2d] tracking-tight mb-3">
+            <h1 className="text-4xl md:text-6xl font-black text-[#2d2d2d] tracking-tight mb-3">
               Explore Restaurants
             </h1>
 
-            <p className="text-xl text-[#2d2d2d]/50 font-medium">
+            <p className="text-base md:text-xl text-[#2d2d2d]/50 font-medium">
               {filteredRestaurants?.length || 0} restaurants found
             </p>
           </div>
@@ -217,7 +217,7 @@ function ExplorePage() {
 
           <button
             onClick={() => setShowAddRestaurant(true)}
-            className="px-6 py-4 rounded-full bg-[#FF5733] text-white font-black hover:scale-[1.02] transition-all"
+            className="w-full md:w-auto px-6 py-4 rounded-full bg-[#FF5733] text-white font-black hover:scale-[1.02] transition-all"
           >
             + Suggest Restaurant
           </button>
@@ -230,7 +230,7 @@ function ExplorePage() {
           />
         )}
 
-        <div className="mb-12 relative">
+        <div className="mb-8 md:mb-12 relative">
 
           <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-[#2d2d2d]/40" />
 
@@ -238,20 +238,18 @@ function ExplorePage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search restaurants, cities or cuisines..."
-            className="w-full pl-14 pr-6 py-5 rounded-3xl bg-[#FAFAFA] border-2 border-[#2d2d2d]/5 focus:outline-none focus:border-[#FF5733] text-lg font-medium"
+            className="w-full pl-14 pr-5 py-4 md:py-5 rounded-3xl bg-[#FAFAFA] border-2 border-[#2d2d2d]/5 focus:outline-none focus:border-[#FF5733] text-base md:text-lg font-medium"
           />
 
         </div>
 
 
 
-        <div className="grid grid-cols-[280px_1fr] gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
 
+          <aside className="w-full">
 
-          <aside>
-
-            <div className="sticky top-24 bg-white rounded-3xl shadow-xl border border-[#2d2d2d]/5 p-8">
-
+            <div className="lg:sticky lg:top-24 bg-white rounded-3xl shadow-xl border border-[#2d2d2d]/5 p-5 md:p-8">
 
               <div className="flex justify-between items-center mb-8">
 
@@ -437,7 +435,7 @@ function FilterSection({
         {title}
       </h3>
 
-      <div className="space-y-2">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-2">
         {children}
       </div>
 
@@ -467,10 +465,9 @@ function FilterButton({
 
       onClick={onClick}
 
-      className={`w-full px-4 py-3 rounded-xl font-bold text-left transition-all hover:scale-[1.02] hover:shadow-md ${active
-        ? color
-          ? "text-white shadow-xl"
-          : "bg-[#2d2d2d] text-white shadow-xl"
+      className={`w-full px-3 md:px-4 py-3 rounded-xl font-bold text-center lg:text-left text-sm md:text-base transition-all hover:scale-[1.02] hover:shadow-md ${active ? color
+        ? "text-white shadow-xl"
+        : "bg-[#2d2d2d] text-white shadow-xl"
         : "bg-[#FAFAFA] text-[#2d2d2d]"
         }`}
 

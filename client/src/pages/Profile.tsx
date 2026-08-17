@@ -305,20 +305,20 @@ function Profile() {
 
     return (
 
-        <div className="min-h-screen bg-white px-6 py-20">
+        <div className="min-h-screen bg-white px-5 md:px-6 py-12 md:py-20">
 
             <div className="max-w-4xl mx-auto">
 
 
-                <h1 className="text-5xl font-black text-[#2d2d2d] mb-12">
+                <h1 className="text-4xl md:text-5xl font-black text-[#2d2d2d] mb-8 md:mb-12">
                     My Profile
                 </h1>
 
-                <div className="flex flex-wrap gap-4 mb-12">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 md:mb-12">
 
                     <button
                         onClick={() => setIsEditing(true)}
-                        className="px-6 py-3
+                        className="w-full px-6 py-3
                          bg-[#FF5733]
                          text-white 
                          font-black
@@ -326,16 +326,14 @@ function Profile() {
                          shadow-lg
                          hover:scale-105
                          hover:shadow-xl
-                         transition-all"
-
-                    >
+                         transition-all">
                         ✏️ Edit Profile
                     </button>
 
 
                     <button
                         onClick={() => setIsEditingPreferences(true)}
-                        className="px-6 py-3
+                        className="w-full px-6 py-3
                         bg-[#2d2d2d]
                          text-white
                          font-black
@@ -353,6 +351,7 @@ function Profile() {
                     <button
                         onClick={() => setShowPasswordChange(!showPasswordChange)}
                         className="
+                        w-full
                         px-6 py-3
                         bg-[#FAFAFA]
                         text-[#2d2d2d]
@@ -370,19 +369,11 @@ function Profile() {
                 {
                     isEditing && (
 
-                        <div className="flex gap-4 mb-12">
+                        <div className="flex flex-col sm:flex-row gap-4 mb-8 md:mb-12">
 
                             <button
                                 onClick={handleSaveProfile}
-                                className="
-                    px-6 py-3
-                    bg-[#FF5733]
-                    text-white
-                    font-black
-                    rounded-2xl
-                    hover:scale-105
-                    transition-all
-                "
+                                className="w-full sm:w-auto px-6 py-3 bg-[#FF5733] text-white font-black rounded-2xl hover:scale-105 transition-all"
                             >
                                 Save Changes
                             </button>
@@ -390,17 +381,7 @@ function Profile() {
 
                             <button
                                 onClick={() => setIsEditing(false)}
-                                className="
-                    px-6 py-3
-                    bg-[#FAFAFA]
-                    text-[#2d2d2d]
-                    font-black
-                    rounded-2xl
-                    border-2 border-[#2d2d2d]/10
-                    hover:border-[#FF5733]
-                    transition-all
-                "
-                            >
+                                className="w-full sm:w-auto px-6 py-3 bg-[#FAFAFA] text-[#2d2d2d] font-black rounded-2xl border-2 border-[#2d2d2d]/10 hover:border-[#FF5733] transition-all">
                                 Cancel
                             </button>
 
@@ -411,7 +392,7 @@ function Profile() {
                 {
                     showPasswordChange && (
 
-                        <div className="bg-white rounded-3xl shadow-xl border border-[#2d2d2d]/5 p-10 mb-8">
+                        <div className="bg-white rounded-3xl shadow-xl border border-[#2d2d2d]/5 p-6 md:p-10 mb-8">
 
                             <h2 className="text-2xl font-black text-[#2d2d2d] mb-8">
                                 Change Password
@@ -527,7 +508,7 @@ function Profile() {
 
 
                 {/* פרטים אישיים */}
-                <section className="bg-white rounded-3xl shadow-xl border border-[#2d2d2d]/5 p-10 mb-8">
+                <section className="bg-white rounded-3xl shadow-xl border border-[#2d2d2d]/5 p-6 md:p-10 mb-8">
 
 
                     <h2 className="text-2xl font-black text-[#2d2d2d] mb-8">
@@ -622,7 +603,7 @@ function Profile() {
 
 
                 {/* העדפות אוכל */}
-                <section className="bg-white rounded-3xl shadow-xl border border-[#2d2d2d]/5 p-10">
+                <section className="bg-white rounded-3xl shadow-xl border border-[#2d2d2d]/5 p-6 md:p-10">
 
 
                     <h2 className="text-2xl font-black text-[#2d2d2d] mb-8">
@@ -631,7 +612,7 @@ function Profile() {
                     {
                         isEditingPreferences && (
 
-                            <div className="flex gap-4 mb-8">
+                           <div className="flex flex-col sm:flex-row gap-4 mb-8 md:mb-12">
 
                                 <button
                                     onClick={handleSavePreferences}
@@ -902,7 +883,7 @@ function Profile() {
                             {
                                 isEditingPreferences ? (
 
-                                    <div className="flex gap-3 mt-3">
+                                    <div className="flex flex-wrap gap-3 mt-3">
 
                                         {priceRanges.map((price) => (
 
@@ -967,7 +948,7 @@ function Profile() {
                 </section>
 
                 {/* מסעדות שמורות */}
-                <section className="bg-white rounded-3xl shadow-xl border border-[#2d2d2d]/5 p-10 mt-8">
+                <section className="bg-white rounded-3xl shadow-xl border border-[#2d2d2d]/5 p-6 md:p-10 mt-8">
 
                     <h2 className="text-2xl font-black text-[#2d2d2d] mb-8">
                         Saved Restaurants
@@ -984,16 +965,9 @@ function Profile() {
                                     onClick={() =>
                                         navigate(`/restaurants/${restaurant._id}`)
                                     }
-                                    className="bg-[#FAFAFA]
-                    rounded-2xl
-                    p-6
-                    cursor-pointer
-                    hover:shadow-lg
-                    hover:scale-[1.01]
-                    transition-all"
-                                >
+                                    className="bg-[#FAFAFA] rounded-2xl p-6 cursor-pointe hover:shadow-lg hover:scale-[1.01] transition-all">
 
-                                    <div className="flex justify-between items-center mb-4">
+                                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
 
                                         <div>
 
@@ -1032,9 +1006,9 @@ function Profile() {
                     </div>
 
                 </section>
-                
+
                 {/* ביקורות שהמשתמש כתב */}
-                <section className="bg-white rounded-3xl shadow-xl border border-[#2d2d2d]/5 p-10 mt-8">
+                <section className="bg-white rounded-3xl shadow-xl border border-[#2d2d2d]/5 p-6 md:p-10 mt-8">
 
 
                     <h2 className="text-2xl font-black text-[#2d2d2d] mb-8">
@@ -1063,9 +1037,7 @@ function Profile() {
                                     transition-all"
                                 >
 
-                                    <div className="flex justify-between items-center mb-4">
-
-
+                                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
                                         <div>
 
                                             <h3 className="text-xl font-black text-[#2d2d2d]">

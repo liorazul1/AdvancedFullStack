@@ -25,19 +25,19 @@ const CuisineSection = () => {
     const navigate = useNavigate();
 
     return (
-        <section className="py-24 px-12 bg-white">
+        <section className="py-16 md:py-24 px-5 md:px-12 bg-white">
             <div className="max-w-[1400px] mx-auto">
-                <div className="mb-16">
-                    <h2 className="text-6xl font-black text-[#2d2d2d] mb-3 tracking-tight">
+                <div className="mb-10 md:mb-16">
+                    <h2 className="text-4xl md:text-6xl font-black text-[#2d2d2d] mb-3 tracking-tight">
                         Browse by Cuisine
                     </h2>
 
-                    <p className="text-xl text-[#2d2d2d]/50 font-medium">
+                    <p className="text-base md:text-xl text-[#2d2d2d]/50 font-medium">
                         Find exactly what you're craving
                     </p>
                 </div>
 
-                <div className="grid grid-cols-4 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                     {categories.map((category) => {
                         const Icon = category.icon;
 
@@ -49,12 +49,12 @@ const CuisineSection = () => {
                                         `/explore?cuisine=${encodeURIComponent(category.name)}`
                                     )
                                 }
-                                className="group relative p-10 rounded-3xl hover:scale-[1.02] transition-all duration-300 shadow-xl hover:shadow-2xl text-left overflow-hidden"
+                                className="group relative p-6 md:p-10 rounded-3xl hover:scale-[1.02] transition-all duration-300 shadow-xl hover:shadow-2xl text-left overflow-hidden"
                                 style={{ backgroundColor: category.color }}
                             >
                                 <Icon className="w-10 h-10 text-white/90 mb-4 stroke-[2.5]" />
 
-                                <h3 className="text-4xl font-black text-white tracking-tight mb-2">
+                               <h3 className="text-2xl md:text-4xl font-black text-white tracking-tight mb-2">
                                     {category.name}
                                 </h3>
 

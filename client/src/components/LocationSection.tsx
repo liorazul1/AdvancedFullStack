@@ -20,31 +20,31 @@ const LocationSection = () => {
     };
 
     return (
-        <section className="py-24 px-12 bg-[#FAFAFA]">
+        <section className="py-16 md:py-24 px-5 md:px-12 bg-[#FAFAFA]">
             <div className="max-w-[1400px] mx-auto">
-                <div className="mb-16">
-                    <h2 className="text-6xl font-black text-[#2d2d2d] mb-3 tracking-tight">
+                <div className="mb-10 md:mb-16">
+                    <h2 className="text-4xl md:text-6xl font-black text-[#2d2d2d] mb-3 tracking-tight">
                         Browse by Location
                     </h2>
 
-                    <p className="text-xl text-[#2d2d2d]/50 font-medium">
+                    <p className="text-base md:text-xl text-[#2d2d2d]/50 font-medium">
                         Discover amazing restaurants across Israel
                     </p>
                 </div>
 
-                <div className="grid grid-cols-4 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                     {locations.map((location) => (
                         <button
                             key={location.name}
                             onClick={() => handleLocationClick(location.name)}
-                            className="group relative p-10 rounded-3xl hover:scale-[1.02] transition-all duration-300 shadow-xl hover:shadow-2xl text-left overflow-hidden"
+                            className="group relative p-6 md:p-10 rounded-3xl hover:scale-[1.02] transition-all duration-300 shadow-xl hover:shadow-2xl text-left overflow-hidden"
                             style={{ backgroundColor: location.color }}
                         >
                             <div className="absolute top-6 right-6 opacity-20">
                                 <MapPin className="w-16 h-16 text-white" />
                             </div>
 
-                            <h3 className="text-4xl font-black text-white tracking-tight mb-2 relative z-10">
+                           <h3 className="text-2xl md:text-4xl font-black text-white tracking-tight mb-2 relative z-10">
                                 {location.name}
                             </h3>
 

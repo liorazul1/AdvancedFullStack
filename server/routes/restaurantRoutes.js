@@ -41,7 +41,12 @@ router.get('/', getAllRestaurants);
 router.get('/:id', getRestaurantById);
 
 // עדכון מסעדה לפי מזהה - Update
-router.put('/:id', protect, updateRestaurant);
+router.put(
+  '/:id',
+  protect,
+  upload.single('image'),
+  updateRestaurant
+);
 
 // מחיקת מסעדה לפי מזהה - Delete
 router.delete('/:id', protect, deleteRestaurant);
