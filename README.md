@@ -10,11 +10,16 @@ Many users want to discover restaurants that match their taste, budget, location
 
 ## Live Demo
 
-Live URL: TODO
+Live URL: (https://tastymatch-kohl.vercel.app)
 
 ## Repository Structure
 
 This project is structured as a **Monorepo** containing both the `client` (Frontend) and `server` (Backend) in a single repository.
+
+## Team Members & Roles
+
+- Lior Azulay
+  Responsible for frontend development, backend development, MongoDB schema design, REST API implementation, authentication, UI/UX, deployment, and documentation.
 
 ## Tech Stack
 
@@ -240,6 +245,17 @@ npm run dev
 The frontend runs on:
 `http://localhost:5173`
 
+## Setup Notes
+
+Before running the project locally, create the required `.env` files in both the `client` and `server` folders according to the environment variables listed above.
+
+The frontend communicates with the backend through Axios using `VITE_API_URL`.
+
+Protected API requests require a JWT token in the request header:
+
+```txt
+Authorization: Bearer <token>
+
 ## API Overview
 
 ### Auth Routes
@@ -278,6 +294,54 @@ The frontend runs on:
 - GET    `/api/reviews/my-reviews`
 - PUT    `/api/reviews/:id`
 - DELETE `/api/reviews/:id`
+
+```md
+## API Endpoints Table
+
+### Auth API
+
+| Method | Endpoint | Description | Protected |
+|---|---|---|---|
+| POST | `/api/auth/register` | Register a new user and return JWT | No |
+| POST | `/api/auth/login` | Login existing user and return JWT | No |
+| POST | `/api/auth/google` | Login or register with Google OAuth | No |
+| GET | `/api/auth/me` | Get the current logged-in user | Yes |
+
+### Users API
+
+| Method | Endpoint | Description | Protected |
+|---|---|---|---|
+| POST | `/api/users` | Create a new user | No |
+| GET | `/api/users` | Get all users | Yes |
+| GET | `/api/users/profile` | Get logged-in user profile | Yes |
+| PUT | `/api/users/profile` | Update logged-in user profile and preferences | Yes |
+| PUT | `/api/users/change-password` | Change logged-in user password | Yes |
+| PUT | `/api/users/save-restaurant/:restaurantId` | Save restaurant to favorites | Yes |
+| DELETE | `/api/users/save-restaurant/:restaurantId` | Remove restaurant from favorites | Yes |
+| GET | `/api/users/:id` | Get user by ID | Yes |
+| PUT | `/api/users/:id` | Update user by ID | Yes |
+| DELETE | `/api/users/:id` | Delete user by ID | Yes |
+
+### Restaurants API
+
+| Method | Endpoint | Description | Protected |
+|---|---|---|---|
+| POST | `/api/restaurants` | Create a new restaurant with optional image upload | Yes |
+| GET | `/api/restaurants` | Get all restaurants | No |
+| GET | `/api/restaurants/:id` | Get restaurant by ID | No |
+| PUT | `/api/restaurants/:id` | Update restaurant details or replace image | Yes |
+| DELETE | `/api/restaurants/:id` | Delete restaurant | Yes |
+
+### Reviews API
+
+| Method | Endpoint | Description | Protected |
+|---|---|---|---|
+| POST | `/api/reviews` | Create a review for a restaurant | Yes |
+| GET | `/api/reviews` | Get all reviews | No |
+| GET | `/api/reviews/restaurant/:restaurantId` | Get reviews for a specific restaurant | No |
+| GET | `/api/reviews/my-reviews` | Get reviews written by the logged-in user | Yes |
+| PUT | `/api/reviews/:id` | Update a review | Yes |
+| DELETE | `/api/reviews/:id` | Delete a review | Yes |
 
 ## UI/UX
 
